@@ -1,0 +1,113 @@
+/* Estilo del dashboard. Dash carga automáticamente todo lo que está en assets/ */
+:root {
+  --fondo: #F5F6F8;
+  --tinta: #1F2937;
+  --tinta-suave: #6B7280;
+  --borde: #E5E7EB;
+  --arena: #F6EFE2;
+  --mar: #0B3B5C;
+  --ganador: #2166AC;
+  --ancho-barra: 272px;
+}
+body { font-family: "Inter", Arial, sans-serif; background: var(--fondo); color: var(--tinta); }
+
+/* Barra lateral */
+.barra { position: fixed; top: 0; left: 0; bottom: 0; width: var(--ancho-barra); background: #fff;
+         border-right: 1px solid var(--borde); padding: 22px 18px; overflow-y: auto; display: flex;
+         flex-direction: column; gap: 18px; z-index: 10; }
+.marca { display: flex; gap: 10px; align-items: center; }
+.marca-icono { font-size: 30px; }
+.marca-titulo { font-weight: 700; font-size: 16px; color: var(--mar); line-height: 1.2; }
+.marca-sub { font-size: 12px; color: var(--tinta-suave); }
+.menu .nav-link { color: var(--tinta); border-radius: 8px; padding: 8px 10px; font-size: 14px; font-weight: 500; }
+.menu .nav-link:hover { background: var(--fondo); }
+.menu .nav-link.active { background: var(--mar); color: #fff; }
+.filtros { border-top: 1px solid var(--borde); padding-top: 16px; }
+.filtros-titulo { font-weight: 700; font-size: 13px; text-transform: uppercase; letter-spacing: .04em; }
+.filtros-nota { font-size: 12px; color: var(--tinta-suave); margin-bottom: 8px; }
+.filtro-etq, .control-etq { font-size: 12px; font-weight: 600; color: var(--tinta-suave); margin: 10px 0 4px;
+                            display: block; text-transform: uppercase; letter-spacing: .03em; }
+.filtro-radio .form-check-inline { margin-right: 10px; font-size: 13px; }
+.enlaces { margin-top: auto; display: flex; flex-direction: column; gap: 6px; font-size: 13px; }
+.enlaces a { color: var(--mar); text-decoration: none; }
+.enlaces a:hover { text-decoration: underline; }
+
+/* Contenido */
+.contenido { margin-left: var(--ancho-barra); padding: 28px 32px 40px; max-width: 1500px; }
+.pagina-titulo { font-weight: 700; color: var(--mar); margin-bottom: 4px; }
+.pagina-intro { color: var(--tinta-suave); max-width: 900px; margin: 0; }
+.seccion-titulo { font-weight: 700; margin: 8px 0 14px; color: var(--mar); }
+
+/* Portada */
+.hero { background: linear-gradient(120deg, var(--arena) 0%, #EAF2F8 100%); border-radius: 16px;
+        padding: 34px 36px; border: 1px solid var(--borde); }
+.hero-compacto { padding: 22px 28px; }
+.hero-eyebrow { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: .06em;
+                color: var(--tinta-suave); margin-bottom: 8px; }
+.hero-titulo { font-weight: 800; color: var(--mar); font-size: 34px; max-width: 820px; }
+.hero-texto { font-size: 17px; max-width: 780px; margin: 10px 0 20px; }
+.respuesta { font-size: 17px; margin: 0; max-width: 1000px; }
+.boton-principal { background: var(--mar); border-color: var(--mar); }
+.boton-principal:hover { background: #072A42; border-color: #072A42; }
+.boton-secundario { color: var(--mar); border-color: var(--mar); }
+.boton-secundario:hover { background: var(--mar); color: #fff; }
+
+/* Indicadores */
+.kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 14px; }
+.kpi { background: #fff; border: 1px solid var(--borde); border-radius: 12px; padding: 14px 16px; }
+.kpi-etiqueta { font-size: 12px; color: var(--tinta-suave); font-weight: 500; }
+.kpi-valor { font-size: 26px; font-weight: 700; color: var(--tinta); line-height: 1.25; margin-top: 2px; }
+.kpi-nota { font-size: 11px; color: var(--tinta-suave); }
+.poder { font-size: 16px; padding: 3px 10px; border-radius: 999px; vertical-align: middle; }
+.poder-alto { background: #1A1A1A; color: #fff; }
+.poder-moderado { background: #737373; color: #fff; }
+.poder-bajo { background: #E5E5E5; color: #1A1A1A; }
+
+/* Tarjetas */
+.tarjeta { border: 1px solid var(--borde); border-radius: 14px; box-shadow: 0 1px 2px rgba(16,24,40,.04); }
+.tarjeta .card-header { background: #fff; border-bottom: none; padding: 16px 18px 0; }
+.tarjeta-titulo { font-weight: 700; margin: 0; }
+.tarjeta-subtitulo { font-size: 12px; color: var(--tinta-suave); margin-top: 2px; }
+.tarjeta-fuente { font-size: 11px; color: #9CA3AF; padding: 0 18px 12px; }
+.tabla { font-size: 13px; margin-bottom: 0; }
+.nota { font-size: 12px; color: var(--tinta-suave); margin-top: 8px; }
+.pregunta { font-size: 16px; }
+
+/* Hallazgos */
+.hallazgo { background: #fff; border: 1px solid var(--borde); border-left: 4px solid var(--ganador);
+            border-radius: 12px; padding: 18px; height: 100%; }
+.hallazgo-etq { font-size: 12px; text-transform: uppercase; letter-spacing: .05em; color: var(--tinta-suave); font-weight: 600; }
+.hallazgo-valor { font-size: 30px; font-weight: 800; color: var(--mar); margin: 4px 0; }
+.hallazgo-texto { font-size: 14px; }
+.hallazgo-item { display: flex; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--borde); }
+.hallazgo-item:last-child { border-bottom: none; }
+.hallazgo-item .num { flex: 0 0 28px; height: 28px; border-radius: 50%; background: var(--mar); color: #fff;
+                      font-weight: 700; font-size: 13px; display: flex; align-items: center; justify-content: center; }
+.hallazgo-item .texto { font-size: 14px; color: var(--tinta-suave); }
+
+/* Recuadro "Para el entrenador" y recomendaciones */
+.entrenador { background: #E8F1FA; border-left: 4px solid var(--ganador); border-radius: 10px;
+              padding: 14px 18px; font-size: 14px; }
+.rec { background: #fff; border: 1px solid var(--borde); border-radius: 12px; padding: 18px; height: 100%; }
+.rec-icono { font-size: 24px; color: var(--ganador); }
+.rec h6 { font-weight: 700; margin: 8px 0 6px; }
+.rec p { font-size: 14px; color: var(--tinta-suave); margin: 0; }
+
+/* Calculadora */
+.resultado { background: #fff; border: 1px solid var(--borde); border-radius: 14px; padding: 22px 24px; }
+.resultado-etq { font-size: 13px; color: var(--tinta-suave); font-weight: 600; text-transform: uppercase; letter-spacing: .04em; }
+.resultado-valor { font-size: 52px; font-weight: 800; line-height: 1.1; color: var(--mar); }
+.resultado-barra { height: 10px; border-radius: 999px; }
+.resultado-lectura { font-size: 16px; font-weight: 600; }
+.resultado-detalle { font-size: 13px; color: var(--tinta-suave); margin-top: 6px; }
+
+/* Pestañas */
+.pestanas .nav-link { color: var(--tinta-suave); font-weight: 600; }
+.pestanas .nav-link.active { color: var(--mar); }
+
+/* Pantallas pequeñas: la barra pasa arriba */
+@media (max-width: 900px) {
+  .barra { position: static; width: 100%; height: auto; border-right: none; border-bottom: 1px solid var(--borde); }
+  .contenido { margin-left: 0; padding: 20px 16px; }
+  .hero-titulo { font-size: 26px; }
+}

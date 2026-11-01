@@ -1,0 +1,14 @@
+# Libro construido (se publica aparte, en la rama gh-pages)
+jb-book/_build/
+
+# Datos limpios: pesan más de 50 MB y se regeneran con python -m py.limpieza
+data/clean/
+
+# Archivos temporales
+__pycache__/
+.ipynb_checkpoints/
+
+# Entornos virtuales y configuración personal de VS Code
+.venv/
+venv/
+.vscode/

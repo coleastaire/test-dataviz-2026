@@ -1,0 +1,11 @@
+format: jb-book
+root: intro
+chapters:
+  - file: 01_contexto
+  - file: 02_objetivos
+  - file: 03_metodologia
+  - file: 04_datos
+  - file: 05_limpieza
+  - file: 06_eda
+  - file: 07_conclusiones
+  - file: 08_referencias

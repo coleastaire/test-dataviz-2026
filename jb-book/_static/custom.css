@@ -1,0 +1,19 @@
+   /* Estilos propios del libro (Jupyter Book los carga automáticamente) */
+
+   /* Modo oscuro: tablas y figuras como tarjetas blancas */
+   html[data-theme="dark"] div.cell_output {
+     background-color: #FFFFFF;
+     border-radius: 10px;
+     padding: 14px;
+     margin-top: 6px;
+     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+   }
+
+   /* Recuadro "Para el entrenador" con el azul de la paleta */
+   div.admonition.tip {
+     border-left-color: #2166AC;
+   }
+   div.admonition.tip > .admonition-title {
+     background-color: #E8F1FA;
+     color: #1A1A1A;
+   }
