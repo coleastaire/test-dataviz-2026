@@ -7,6 +7,7 @@ data/clean/
 # Archivos temporales
 __pycache__/
 .ipynb_checkpoints/
+.pytest_cache/
 
 # Entornos virtuales y configuración personal de VS Code
 .venv/

@@ -4,6 +4,7 @@ Usa las mismas fórmulas que el libro: Mann-Whitney U con correlación
 rango-biserial, solapamiento IQR, chi-cuadrado con V de Cramér, Spearman y VIF.
 """
 import json
+from functools import lru_cache
 from pathlib import Path
 
 import numpy as np
@@ -70,10 +71,10 @@ VARS_BI = {
 TABLAS = {"P": P, "E": E, "J": J}
 
 
-def serie_uni(clave, circuito, genero, anios):
+def serie_uni(clave, circuito, genero, anios, etapa="Todas"):
     """Devuelve la tabla filtrada y la columna de una variable univariada."""
     tabla, col, _, _, solo_stats = VARS_UNI[clave]
-    d = filtrar(TABLAS[tabla], circuito, genero, anios)
+    d = filtrar(TABLAS[tabla], circuito, genero, anios, etapa)
     if tabla == "P":
         d = d[d.es_forfeit == 0]
     if solo_stats:
@@ -114,9 +115,9 @@ def solo_avp(d):
     return d[(d.circuit == "AVP") & (d.tiene_stats_completas == 1)]
 
 
-def tabla_poder(circuito, genero, anios):
-    """RBC de todas las variables numéricas con los filtros actuales."""
-    d = filtrar(E, circuito, genero, anios)
+@lru_cache(maxsize=64)
+def _tabla_poder(circuito, genero, anios, etapa):
+    d = filtrar(E, circuito, genero, anios, etapa)
     filas = []
     for var, (etq, _, solo_stats) in VARS_BI.items():
         dd = solo_avp(d) if solo_stats else d
@@ -124,6 +125,11 @@ def tabla_poder(circuito, genero, anios):
         if r:
             filas.append({"var": var, "Variable": etq + (" (AVP)" if solo_stats else ""), **r})
     return pd.DataFrame(filas)
+
+
+def tabla_poder(circuito, genero, anios, etapa="Todas"):
+    """RBC de todas las variables numéricas con los filtros actuales (en caché: los filtros se repiten)."""
+    return _tabla_poder(circuito, genero, tuple(anios), etapa).copy()
 
 
 def chi_v(x, y):

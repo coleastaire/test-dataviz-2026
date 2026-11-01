@@ -2,23 +2,39 @@
 import plotly.graph_objects as go
 import plotly.io as pio
 
-# Paleta fija: un color significa una sola cosa en todo el dashboard
-PAL = {"FIVB": "#D95F02", "AVP": "#1B9E77",
-       "Ganador": "#2166AC", "Perdedor": "#B2182B",
-       "M": "#7570B3", "W": "#E7298A"}
+# Paleta fija de playa: un color significa una sola cosa en todo el dashboard
+# (la misma de jb-book/py/utils.py y de assets/estilo.css)
+MAR = "#0B3B5C"        # ganador y marca
+CORAL = "#E4572E"      # perdedor y sorpresas
+TURQUESA = "#1A8A9A"   # FIVB
+ARENA = "#D9A441"      # AVP
+
+PAL = {"FIVB": TURQUESA, "AVP": ARENA,
+       "Ganador": MAR, "Perdedor": CORAL,
+       "M": "#2F6690", "W": "#C97B63"}
 ETAPAS = ["Clasificatoria", "Fase de grupos", "Cuadro principal", "Semifinales", "Finales"]
-PAL_ETAPA = dict(zip(ETAPAS, ["#C6DBEF", "#9ECAE1", "#6BAED6", "#3182BD", "#08519C"]))
-PAL_PODER = {"Alto": "#1A1A1A", "Moderado": "#737373", "Bajo": "#BDBDBD"}
-NEUTRO = "#4682B4"
-GRIS = "#4D4D4D"
-ESCALA_CORR = [[0, "#8E0152"], [0.25, "#DE77AE"], [0.5, "#F7F7F7"],
-               [0.75, "#7FBC41"], [1, "#276419"]]
+# Etapas: más oscuro = más avanzado en el torneo
+PAL_ETAPA = dict(zip(ETAPAS, ["#BFE3E6", "#86C7CE", "#4FA3AE", "#1F6F86", MAR]))
+# Poder discriminante: mismo tono, más intenso = más poder
+PAL_PODER = {"Alto": MAR, "Moderado": "#5B8DB0", "Bajo": "#C9D6E3"}
+# Modelos: más oscuro = más complejo; la regla de referencia en gris
+PAL_MODELO = {"Regresión logística": "#86C7CE", "Random Forest": "#1F6F86",
+              "Gradient Boosting": MAR, "Regla del ranking": "#64748B"}
+# Perfiles de juego, ordenados por % de victorias: de mar (más gana) a coral (más pierde)
+PAL_PERFIL = [MAR, "#5B8DB0", "#EFA58C", CORAL]
+NEUTRO = MAR
+GRIS = "#64748B"
+# Correlación: coral (negativa) – blanco – mar (positiva)
+ESCALA_CORR = [[0, CORAL], [0.5, "#F7F7F7"], [1, MAR]]
+# Escala de una sola dirección (por ejemplo, matriz de confusión)
+ESCALA_SEC = [[0, "#F4EBDD"], [0.5, "#4FA3AE"], [1, MAR]]
 GENERO = {"M": "Hombres", "W": "Mujeres"}
 
 TINTA = "#1F2937"
 TINTA_SUAVE = "#6B7280"
 REJILLA = "#ECEEF1"
 FUENTE = "Fuente: vb_matches.csv (BigTimeStats vía TidyTuesday). Elaboración propia."
+LETRA = "Inter, 'Segoe UI', Roboto, Arial, sans-serif"
 
 
 def fmt(x, d=2):
@@ -37,8 +53,8 @@ def fmt_p(p):
 
 # Plantilla de plotly para todos los gráficos
 pio.templates["vb"] = go.layout.Template(layout=dict(
-    font=dict(family="Inter, Arial, sans-serif", size=13, color=TINTA),
-    paper_bgcolor="white", plot_bgcolor="white", separators=",.",
+    font=dict(family=LETRA, size=13, color=TINTA),
+    paper_bgcolor="rgba(0,0,0,0)", plot_bgcolor="rgba(0,0,0,0)", separators=",.",
     xaxis=dict(gridcolor=REJILLA, zeroline=False, linecolor="#D1D5DB",
                ticks="outside", tickcolor="#D1D5DB", automargin=True),
     yaxis=dict(gridcolor=REJILLA, zeroline=False, automargin=True),
@@ -46,8 +62,8 @@ pio.templates["vb"] = go.layout.Template(layout=dict(
                 title=None),
     margin=dict(l=10, r=20, t=40, b=10),
     hoverlabel=dict(bgcolor="white", bordercolor="#D1D5DB",
-                    font=dict(family="Inter, Arial, sans-serif", color=TINTA)),
-    colorway=[NEUTRO, GRIS]))
+                    font=dict(family=LETRA, color=TINTA)),
+    colorway=[MAR, TURQUESA, ARENA, CORAL, GRIS]))
 pio.templates.default = "vb"
 
 
