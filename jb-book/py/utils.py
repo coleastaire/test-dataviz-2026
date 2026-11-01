@@ -6,7 +6,7 @@ import pandas as pd
 import plotly.graph_objects as go
 import plotly.io as pio
 
-# Para que los gráficos plotly aparezcan en el HTML de Quarto
+# Para que los gráficos plotly aparezcan en el HTML del libro
 pio.renderers.default = "plotly_mimetype+notebook_connected"
 
 # ---------------------------------------------------------------
@@ -16,25 +16,35 @@ RANDOM_STATE = 2026
 np.random.seed(RANDOM_STATE)
 
 # ---------------------------------------------------------------
-# 2. Paleta fija (guía 1.2): un color = una sola cosa en todo el libro
+# 2. Paleta fija: la misma del dashboard. Cuatro colores de playa
+#    (mar, turquesa, arena y coral) y un color = una sola cosa.
 # ---------------------------------------------------------------
-PAL = {"FIVB": "#D95F02", "AVP": "#1B9E77",
-       "Ganador": "#2166AC", "Perdedor": "#B2182B",
-       "M": "#7570B3", "W": "#E7298A"}
+MAR = "#0B3B5C"        # ganador
+TURQUESA = "#1A8A9A"   # FIVB
+ARENA = "#D9A441"      # AVP
+CORAL = "#E4572E"      # perdedor y sorpresas
+
+PAL = {"FIVB": TURQUESA, "AVP": ARENA,
+       "Ganador": MAR, "Perdedor": CORAL,
+       "M": "#2F6690", "W": "#C97B63"}
 
 ETAPAS = ["Clasificatoria", "Fase de grupos", "Cuadro principal",
           "Semifinales", "Finales"]
-PAL_ETAPA = dict(zip(ETAPAS, ["#C6DBEF", "#9ECAE1", "#6BAED6",
-                              "#3182BD", "#08519C"]))
+# Etapas: más oscuro = más avanzado en el torneo
+PAL_ETAPA = dict(zip(ETAPAS, ["#BFE3E6", "#86C7CE", "#4FA3AE", "#1F6F86", MAR]))
 
-PAL_PODER = {"Alto": "#1A1A1A", "Moderado": "#737373", "Bajo": "#BDBDBD"}
-PAL_MODELO = {"Regresión logística": "#E6AB02", "Random Forest": "#A6761D",
-              "XGBoost": "#6A3D9A", "Regla del ranking": "#999999"}
-NEUTRO = "#4682B4"
-GRIS_TOTAL = "#4D4D4D"
+# Poder discriminante: mismo tono, más intenso = más poder
+PAL_PODER = {"Alto": MAR, "Moderado": "#5B8DB0", "Bajo": "#C9D6E3"}
+# Modelos: más oscuro = más complejo; la regla de referencia en gris
+PAL_MODELO = {"Regresión logística": "#86C7CE", "Random Forest": "#1F6F86",
+              "XGBoost": MAR, "Regla del ranking": "#64748B"}
+NEUTRO = MAR
+GRIS_TOTAL = "#64748B"
 
-ESCALA_CORR = [[0, "#8E0152"], [0.25, "#DE77AE"], [0.5, "#F7F7F7"],
-               [0.75, "#7FBC41"], [1, "#276419"]]
+# Correlación: coral (negativa) – blanco – mar (positiva)
+ESCALA_CORR = [[0, CORAL], [0.5, "#F7F7F7"], [1, MAR]]
+# Escala de una sola dirección (por ejemplo, matriz de confusión)
+ESCALA_SEC = [[0, "#F4EBDD"], [0.5, "#4FA3AE"], [1, MAR]]
 
 FUENTE = ("Fuente: vb_matches.csv (BigTimeStats vía TidyTuesday). "
           "Elaboración propia.")
@@ -72,15 +82,15 @@ def fmt_pct(x, d=1):
 def estilo_plotly(fig, titulo, x, y):
     fig.update_layout(
         template="plotly_white", title=dict(text=titulo, x=0, y=0.97),
-        xaxis=dict(title=x, gridcolor="#E5E5E5", showticklabels=True, automargin=True),
-        yaxis=dict(title=y, gridcolor="#E5E5E5", showticklabels=True, automargin=True),
-        separators=",.", font=dict(family="Arial", size=13, color="#333333"),
+        xaxis=dict(title=x, gridcolor="#ECEEF1", showticklabels=True, automargin=True),
+        yaxis=dict(title=y, gridcolor="#ECEEF1", showticklabels=True, automargin=True),
+        separators=",.", font=dict(family="Arial", size=13, color="#1F2937"),
         plot_bgcolor="white", paper_bgcolor="white",
         legend=dict(orientation="h", x=0, y=1.02, xanchor="left", yanchor="bottom"),
         margin=dict(t=90, b=100, l=70, r=20))
     fig.add_annotation(text=FUENTE, xref="paper", yref="paper", x=0, y=0,
                        yshift=-70, xanchor="left", yanchor="top", showarrow=False,
-                       font=dict(size=10, color="#737373"))
+                       font=dict(size=10, color="#6B7280"))
     return fig
 
 # ---------------------------------------------------------------

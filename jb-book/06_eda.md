@@ -28,7 +28,66 @@ El análisis exploratorio avanza en tres niveles: cada variable por separado (un
 
 ## Análisis univariado
 
-Esta sección describe cómo se distribuye cada variable numérica, sin compararla todavía con el resultado. Sirve para conocer el perfil típico de un partido y de una pareja profesional, y para decidir si alguna variable necesita una transformación antes de las pruebas.
+Esta sección describe cómo se distribuye cada variable por separado. Empieza por la variable respuesta, el resultado del partido, y sigue con las variables numéricas, sin compararlas todavía con el resultado. Sirve para conocer el perfil típico de un partido y de una pareja profesional, y para decidir si alguna variable necesita una transformación antes de las pruebas.
+
+### Variable respuesta: quién gana el partido
+
+```{code-cell} ipython3
+:tags: [remove-cell]
+n_part = len(m)
+a_gana = m.a_gana.value_counts().reindex([1, 0])
+pct_a = 100 * a_gana / n_part
+con_rank = m.rank_diff.notna()
+quien = pd.Series({
+    "Gana el mejor rankeado": int((con_rank & (m.es_upset == 0)).sum()),
+    "Sorpresa: gana el peor rankeado": int((con_rank & (m.es_upset == 1)).sum()),
+    "Sin ranking de ambas parejas": int((~con_rank).sum())})
+pct_quien = 100 * quien / n_part
+bal = 100 * m.groupby(["circuit", "gender"]).a_gana.mean()
+registrar("f6_0_pct_a_gana", pct_a[1])
+registrar("f6_0_pct_fav_total", pct_quien.iloc[0])
+
+pegar("f60_n", fmt(n_part, 0))
+pegar("f60_n_eq", fmt(2 * n_part, 0))
+pegar("f60_a", fmt(a_gana[1], 0))
+pegar("f60_pct_a", fmt_pct(pct_a[1]))
+pegar("f60_b", fmt(a_gana[0], 0))
+pegar("f60_pct_b", fmt_pct(pct_a[0]))
+pegar("f60_bal_min", fmt_pct(bal.min()))
+pegar("f60_bal_max", fmt_pct(bal.max()))
+pegar("f60_fav", fmt_pct(pct_quien.iloc[0]))
+pegar("f60_ups", fmt_pct(pct_quien.iloc[1]))
+pegar("f60_sin", fmt_pct(pct_quien.iloc[2]))
+```
+
+**Figura 6.1.** Variable respuesta: resultado de la pareja A y resultado frente al ranking.
+
+```{code-cell} ipython3
+fig = make_subplots(rows=1, cols=2, column_widths=[0.4, 0.6], horizontal_spacing=0.14,
+                    subplot_titles=["Resultado de la pareja A", "¿Gana el favorito?"])
+fig.add_bar(x=["Gana A", "Gana B"], y=a_gana.values, marker_color=[PAL["Ganador"], PAL["Perdedor"]],
+            text=[f"{fmt(n, 0)}<br>({fmt_pct(p)})" for n, p in zip(a_gana.values, pct_a.values)],
+            textposition="outside", cliponaxis=False, showlegend=False,
+            hovertemplate="%{x}<br>Partidos: %{y:,}<extra></extra>", row=1, col=1)
+fig.add_bar(x=quien.values, y=["Gana el mejor<br>rankeado", "Sorpresa", "Sin ranking<br>de ambas"],
+            orientation="h", marker_color=[PAL["Ganador"], PAL["Perdedor"], "#C9D6E3"],
+            text=[f"{fmt(n, 0)} ({fmt_pct(p)})" for n, p in zip(quien.values, pct_quien.values)],
+            textposition="outside", cliponaxis=False, showlegend=False,
+            hovertemplate="%{y}<br>Partidos: %{x:,}<extra></extra>", row=1, col=2)
+fig.update_yaxes(range=[0, a_gana.max() * 1.25], tickformat=",d", row=1, col=1)
+fig.update_xaxes(range=[0, quien.max() * 1.45], tickformat=",d", row=1, col=2)
+fig.update_yaxes(autorange="reversed", row=1, col=2)
+estilo_plotly(fig, "Variable respuesta: resultado de la pareja A y resultado frente al ranking", "", "")
+fig.update_yaxes(title_text="Partidos", row=1, col=1)
+fig.update_xaxes(title_text="Partidos", row=1, col=2)
+fig
+```
+
+La variable respuesta del libro es el **resultado del partido**: qué pareja gana. En la tabla equipo-partido, cada uno de los {glue}`f60_n` partidos aporta una fila "Ganador" y una "Perdedor" ({glue}`f60_n_eq` filas), así que esa columna está balanceada por construcción. Para el modelado (capítulo 8) se usa la versión a nivel de partido: `a_gana` vale 1 si gana la pareja A y 0 si gana la B, donde A se asigna con una regla fija que no depende del resultado. Gana A en {glue}`f60_a` partidos ({glue}`f60_pct_a`) y B en {glue}`f60_b` ({glue}`f60_pct_b`) (Figura 6.1, panel izquierdo), y el balance se mantiene en cada circuito y género (entre {glue}`f60_bal_min` y {glue}`f60_bal_max`). Por eso, al evaluar los modelos, la accuracy es interpretable y no hace falta corregir desbalance de clases.
+
+Mirado frente al ranking (panel derecho), el resultado tiene tres casos: el mejor rankeado gana el {glue}`f60_fav` de todos los partidos, la pareja peor rankeada da la sorpresa en el {glue}`f60_ups` y en el {glue}`f60_sin` restante al menos una pareja no tiene ranking numérico, de modo que no hay favorito definido. Ese último grupo, formado sobre todo por partidos de clasificatoria, queda fuera de los análisis de ranking y del modelo.
+
+### Variables numéricas
 
 ```{code-cell} ipython3
 :tags: [remove-cell]
@@ -99,7 +158,7 @@ estilo_plotly(fig, "Distribución de la edad de los jugadores (años)",
               "Edad (años)", "Registros jugador-partido")
 ```
 
-**Figura 6.1.** Distribución de la edad de los jugadores (años).
+**Figura 6.2.** Distribución de la edad de los jugadores (años).
 
 ```{code-cell} ipython3
 :tags: [remove-cell]
@@ -115,7 +174,7 @@ pegar("f61_menor16", fmt(n_menor16, 0))
 pegar("f61_mayor45", fmt(n_mayor45, 0))
 ```
 
-El 50 % central de los registros está entre {glue}`f61_q25` y {glue}`f61_q75` años (Figura 6.1). Hay {glue}`f61_menor16` registros de jugadores menores de 16 años y {glue}`f61_mayor45` de mayores de 45: son juniors y veteranos reales, no errores. El voleibol de playa profesional se juega sobre todo entre los 25 y los 32 años.
+El 50 % central de los registros está entre {glue}`f61_q25` y {glue}`f61_q75` años (Figura 6.2). Hay {glue}`f61_menor16` registros de jugadores menores de 16 años y {glue}`f61_mayor45` de mayores de 45: son juniors y veteranos reales, no errores. El voleibol de playa profesional se juega sobre todo entre los 25 y los 32 años.
 
 ```{code-cell} ipython3
 fig = go.Figure()
@@ -129,7 +188,7 @@ estilo_plotly(fig, "Distribución de la estatura por género (cm)",
               "Estatura (cm)", "Registros jugador-partido")
 ```
 
-**Figura 6.2.** Distribución de la estatura por género (cm).
+**Figura 6.3.** Distribución de la estatura por género (cm).
 
 ```{code-cell} ipython3
 :tags: [remove-cell]
@@ -154,7 +213,7 @@ pegar("f62_falta_p", fmt_pct(pct_falta_p))
 pegar("f62_falta_g", fmt_pct(pct_falta_g))
 ```
 
-Los hombres miden en mediana {glue}`f62_med_h` cm y las mujeres {glue}`f62_med_m` cm, una diferencia de {glue}`f62_dif` cm (Figura 6.2). Por eso la estatura se analiza siempre separada por género: mezclarla crearía una distribución con dos picos que no describe a nadie. Falta al menos una estatura en el {glue}`f62_falta` de los partidos, más en la AVP ({glue}`f62_falta_avp`) que en la FIVB ({glue}`f62_falta_fivb`), y más en perdedores ({glue}`f62_falta_p` de las celdas) que en ganadores ({glue}`f62_falta_g`). Esa diferencia hay que tenerla en cuenta al comparar ganadores y perdedores: los jugadores sin estatura registrada tienden a ser los menos conocidos.
+Los hombres miden en mediana {glue}`f62_med_h` cm y las mujeres {glue}`f62_med_m` cm, una diferencia de {glue}`f62_dif` cm (Figura 6.3). Por eso la estatura se analiza siempre separada por género: mezclarla crearía una distribución con dos picos que no describe a nadie. Falta al menos una estatura en el {glue}`f62_falta` de los partidos, más en la AVP ({glue}`f62_falta_avp`) que en la FIVB ({glue}`f62_falta_fivb`), y más en perdedores ({glue}`f62_falta_p` de las celdas) que en ganadores ({glue}`f62_falta_g`). Esa diferencia hay que tenerla en cuenta al comparar ganadores y perdedores: los jugadores sin estatura registrada tienden a ser los menos conocidos.
 
 ```{code-cell} ipython3
 fig = go.Figure(go.Histogram(
@@ -165,7 +224,7 @@ estilo_plotly(fig, "Distribución del ranking principal de los equipos",
               "Ranking principal (1 = mejor)", "Equipos-partido")
 ```
 
-**Figura 6.3.** Distribución del ranking principal de los equipos.
+**Figura 6.4.** Distribución del ranking principal de los equipos.
 
 ```{code-cell} ipython3
 :tags: [remove-cell]
@@ -182,7 +241,7 @@ pegar("f63_con_rank", fmt(n_con_rank, 0))
 pegar("f63_top10", fmt_pct(pct_top10))
 ```
 
-El ranking va de {glue}`f63_min` a {glue}`f63_max` (Figura 6.3). El {glue}`f63_sin_rank` de los equipos-partido no tiene ranking numérico porque solo trae su posición de clasificatoria ("Q"). Por eso todo análisis de ranking cubre {glue}`f63_con_rank` equipos-partido y no el total. Entre los que sí tienen ranking, el {glue}`f63_top10` está entre los 10 primeros: los equipos mejor rankeados avanzan más en los torneos y, por lo tanto, juegan más partidos.
+El ranking va de {glue}`f63_min` a {glue}`f63_max` (Figura 6.4). El {glue}`f63_sin_rank` de los equipos-partido no tiene ranking numérico porque solo trae su posición de clasificatoria ("Q"). Por eso todo análisis de ranking cubre {glue}`f63_con_rank` equipos-partido y no el total. Entre los que sí tienen ranking, el {glue}`f63_top10` está entre los 10 primeros: los equipos mejor rankeados avanzan más en los torneos y, por lo tanto, juegan más partidos.
 
 ```{code-cell} ipython3
 dur = mf.duracion_min.dropna()
@@ -199,7 +258,7 @@ estilo_plotly(fig, "Distribución de la duración de los partidos (min)",
               "Duración (min)", "Partidos")
 ```
 
-**Figura 6.4.** Distribución de la duración de los partidos (min).
+**Figura 6.5.** Distribución de la duración de los partidos (min).
 
 ```{code-cell} ipython3
 :tags: [remove-cell]
@@ -217,7 +276,7 @@ pegar("f64_min", fmt(dur.min(), 0))
 pegar("f64_max", fmt(dur.max(), 0))
 ```
 
-La mitad de los partidos dura entre {glue}`f64_p25` y {glue}`f64_p75` minutos, con una mediana de {glue}`f64_p50` (Figura 6.4). La distribución tiene dos zonas: los partidos a 2 sets, alrededor de {glue}`f64_med2` minutos, y los partidos a 3 sets, alrededor de {glue}`f64_med3`, que forman la cola derecha. El mínimo es de {glue}`f64_min` minutos y el máximo de {glue}`f64_max`.
+La mitad de los partidos dura entre {glue}`f64_p25` y {glue}`f64_p75` minutos, con una mediana de {glue}`f64_p50` (Figura 6.5). La distribución tiene dos zonas: los partidos a 2 sets, alrededor de {glue}`f64_med2` minutos, y los partidos a 3 sets, alrededor de {glue}`f64_med3`, que forman la cola derecha. El mínimo es de {glue}`f64_min` minutos y el máximo de {glue}`f64_max`.
 
 ```{code-cell} ipython3
 sets = mf.n_sets.value_counts().sort_index()
@@ -239,7 +298,7 @@ fig.update_xaxes(title_text="Puntos totales del partido", row=1, col=2)
 fig
 ```
 
-**Figura 6.5.** Número de sets y puntos totales por partido.
+**Figura 6.6.** Número de sets y puntos totales por partido.
 
 ```{code-cell} ipython3
 :tags: [remove-cell]
@@ -268,7 +327,7 @@ pegar("f65_med_h", fmt(med_est["M"], 0))
 pegar("f65_med_m", fmt(med_est["W"], 0))
 ```
 
-El {glue}`f65_pct2` de los partidos se decide en 2 sets y el {glue}`f65_pct3` en 3 (Figura 6.5). Hay {glue}`f65_n1` partidos de un solo set: {glue}`f65_n1_ret` terminaron por retiro y los otros {glue}`f65_n1_jug` se jugaron a un único set de 15 o 25 puntos, un formato que usaron algunos torneos y que se concentra en la {glue}`f65_uno_a` y la {glue}`f65_uno_b`. No se mezclan con los demás al comparar duraciones. La mediana es de {glue}`f65_med_pts` puntos por partido: {glue}`f65_pts2` en los partidos a 2 sets y {glue}`f65_pts3` en los de 3, lo que explica la forma de dos picos del panel derecho.
+El {glue}`f65_pct2` de los partidos se decide en 2 sets y el {glue}`f65_pct3` en 3 (Figura 6.6). Hay {glue}`f65_n1` partidos de un solo set: {glue}`f65_n1_ret` terminaron por retiro y los otros {glue}`f65_n1_jug` se jugaron a un único set de 15 o 25 puntos, un formato que usaron algunos torneos y que se concentra en la {glue}`f65_uno_a` y la {glue}`f65_uno_b`. No se mezclan con los demás al comparar duraciones. La mediana es de {glue}`f65_med_pts` puntos por partido: {glue}`f65_pts2` en los partidos a 2 sets y {glue}`f65_pts3` en los de 3, lo que explica la forma de dos picos del panel derecho.
 
 ```{admonition} Para el entrenador
 :class: tip
@@ -348,7 +407,7 @@ for nivel, color in PAL_PODER.items():
     filas = t.index[t.Poder == nivel].tolist()
     if filas:
         gt = gt.tab_style(style=[style.fill(color=color),
-                                 style.text(color="white" if nivel != "Bajo" else "#1A1A1A", weight="bold")],
+                                 style.text(color="white" if nivel != "Bajo" else MAR, weight="bold")],
                           locations=loc.body(columns="Poder", rows=filas))
 gt.opt_stylize(style=1, color="gray")
 ```
@@ -415,14 +474,14 @@ fig.update_yaxes(title_text="Ranking (posición)", row=1, col=1)
 fig
 ```
 
-**Figura 6.6.** Ranking, edad y estatura del equipo según resultado.
+**Figura 6.7.** Ranking, edad y estatura del equipo según resultado.
 
 ```{code-cell} ipython3
 :tags: [remove-cell]
 pegar("f66_solap_rank", fmt(t62["Solapamiento IQR"]["rank_main"]))
 ```
 
-Las cajas del ranking están desplazadas: la mediana es {glue}`t62_med_g_rank` en ganadores y {glue}`t62_med_p_rank` en perdedores, con un solapamiento IQR de {glue}`f66_solap_rank` (Figura 6.6). En edad y estatura las cajas casi se superponen, coherente con su poder bajo: conocer la edad o la estatura de una pareja, sin mirar al rival, dice muy poco sobre si va a ganar.
+Las cajas del ranking están desplazadas: la mediana es {glue}`t62_med_g_rank` en ganadores y {glue}`t62_med_p_rank` en perdedores, con un solapamiento IQR de {glue}`f66_solap_rank` (Figura 6.7). En edad y estatura las cajas casi se superponen, coherente con su poder bajo: conocer la edad o la estatura de una pareja, sin mirar al rival, dice muy poco sobre si va a ganar.
 
 ### Poder discriminante
 
@@ -435,6 +494,7 @@ p["abs"] = p.RBC.abs()
 p = p.sort_values("abs")
 fig = go.Figure(go.Bar(
     x=p["abs"], y=p.etq, orientation="h", marker_color=[PAL_PODER[x] for x in p.Poder],
+    text=[fmt(v) for v in p["abs"]], textposition="outside", cliponaxis=False,
     customdata=np.stack([p.RBC, p["p-valor"].map(fmt_p), p["n Ganador"] + p["n Perdedor"], p.Poder], axis=1),
     hovertemplate="%{y}<br>RBC: %{customdata[0]:.3f}<br>p-valor: %{customdata[1]}"
                   "<br>n: %{customdata[2]:,}<br>Poder: %{customdata[3]}<extra></extra>"))
@@ -446,7 +506,7 @@ estilo_plotly(fig, "Poder discriminante de las variables (|RBC|)",
               "|Correlación rango-biserial| (0–1)", "")
 ```
 
-**Figura 6.7.** Poder discriminante de las variables (|RBC|).
+**Figura 6.8.** Poder discriminante de las variables (|RBC|).
 
 ```{code-cell} ipython3
 :tags: [remove-cell]
@@ -461,7 +521,7 @@ pegar("f67_bajo", str(cuenta["Bajo"]))
 pegar("f67_altas", " y ".join(altas))
 ```
 
-{glue}`f67_alto` variable tiene poder alto, {glue}`f67_moderado` tienen poder moderado y {glue}`f67_bajo` poder bajo (Figura 6.7). La de poder alto es {glue}`f67_altas`, y todas las de poder moderado son también estadísticas de juego de la AVP. Las variables físicas y el ranking absoluto quedan en poder bajo: por sí solas no anticipan quién gana. La H y la M entre paréntesis indican hombres y mujeres.
+{glue}`f67_alto` variable tiene poder alto, {glue}`f67_moderado` tienen poder moderado y {glue}`f67_bajo` poder bajo (Figura 6.8). La de poder alto es {glue}`f67_altas`, y todas las de poder moderado son también estadísticas de juego de la AVP. Las variables físicas y el ranking absoluto quedan en poder bajo: por sí solas no anticipan quién gana. La H y la M entre paréntesis indican hombres y mujeres.
 
 ### Variables categóricas: chi-cuadrado y V de Cramér
 
@@ -537,7 +597,7 @@ estilo_plotly(fig, "Distribución de la diferencia de ranking (perdedor − gana
               "Diferencia de ranking (posiciones)", "Partidos")
 ```
 
-**Figura 6.8.** Distribución de la diferencia de ranking (perdedor − ganador).
+**Figura 6.9.** Distribución de la diferencia de ranking (perdedor − ganador).
 
 ```{code-cell} ipython3
 :tags: [remove-cell]
@@ -558,7 +618,7 @@ pegar("f68_n_puro", fmt(len(puro), 0))
 pegar("f68_pct_puro", fmt_pct(100 * puro.es_upset.mean()))
 ```
 
-La diferencia media es de {glue}`f68_media` posiciones (mediana de {glue}`f68_mediana`): en general gana el mejor rankeado (Figura 6.8). Aun así, el {glue}`f68_pct_upset` de los {glue}`f68_n` partidos con ambos rankings son upsets, casi uno de cada tres. Como prueba de sensibilidad, si se usan solo los rankings simples (sin el formato compuesto "17, Q2"), quedan {glue}`f68_n_puro` partidos y la tasa es del {glue}`f68_pct_puro`: la conclusión no cambia.
+La diferencia media es de {glue}`f68_media` posiciones (mediana de {glue}`f68_mediana`): en general gana el mejor rankeado (Figura 6.9). Aun así, el {glue}`f68_pct_upset` de los {glue}`f68_n` partidos con ambos rankings son upsets, casi uno de cada tres. Como prueba de sensibilidad, si se usan solo los rankings simples (sin el formato compuesto "17, Q2"), quedan {glue}`f68_n_puro` partidos y la tasa es del {glue}`f68_pct_puro`: la conclusión no cambia.
 
 ```{code-cell} ipython3
 etiquetas = ["1–2", "3–5", "6–10", "11–20", "21 o más"]
@@ -582,7 +642,7 @@ estilo_plotly(fig, "Probabilidad de que gane el mejor rankeado según la diferen
               "Diferencia de ranking (posiciones)", "% de victorias del mejor rankeado")
 ```
 
-**Figura 6.9.** Probabilidad de que gane el mejor rankeado según la diferencia de ranking.
+**Figura 6.10.** Probabilidad de que gane el mejor rankeado según la diferencia de ranking.
 
 ```{code-cell} ipython3
 :tags: [remove-cell]
@@ -595,7 +655,7 @@ pegar("f69_cerca", fmt_pct(fv.pct["1–2"]))
 pegar("f69_lejos", fmt_pct(fv.pct["21 o más"]))
 ```
 
-Con 1 o 2 posiciones de diferencia, el favorito gana el {glue}`f69_cerca` de las veces: casi una moneda al aire (Figura 6.9). La probabilidad sube de forma constante con la diferencia y, con más de 20 posiciones, llega al {glue}`f69_lejos`. Los intervalos de confianza son muy estrechos porque cada grupo tiene miles de partidos. El ranking es informativo, pero su valor depende de la distancia con el rival.
+Con 1 o 2 posiciones de diferencia, el favorito gana el {glue}`f69_cerca` de las veces: casi una moneda al aire (Figura 6.10). La probabilidad sube de forma constante con la diferencia y, con más de 20 posiciones, llega al {glue}`f69_lejos`. Los intervalos de confianza son muy estrechos porque cada grupo tiene miles de partidos. El ranking es informativo, pero su valor depende de la distancia con el rival.
 
 ```{code-cell} ipython3
 ue = (r.groupby(["etapa", "circuit"], observed=True)
@@ -615,7 +675,7 @@ estilo_plotly(fig, "Tasa de upsets por etapa del torneo y circuito",
               "Etapa del torneo", "% de upsets")
 ```
 
-**Figura 6.10.** Tasa de upsets por etapa del torneo y circuito.
+**Figura 6.11.** Tasa de upsets por etapa del torneo y circuito.
 
 ```{code-cell} ipython3
 :tags: [remove-cell]
@@ -640,7 +700,7 @@ pegar("f610_frase", "En todas las etapas comparables, la FIVB tiene más sorpres
 pegar("f610_exc", exc_txt)
 ```
 
-En la FIVB, la tasa de upsets es mayor en la {glue}`f610_max_etapa` ({glue}`f610_max`) y menor en la {glue}`f610_min_etapa` ({glue}`f610_min`) (Figura 6.10). La explicación está en la distancia entre rivales: en la fase de grupos los rivales están separados, en mediana, por {glue}`f610_d_grupos` posiciones, mientras que en semifinales y finales solo por {glue}`f610_d_semis`; a menor distancia, más sorpresas. La clasificatoria tiene la tasa más alta, pero también la muestra más pequeña con ranking: ahí se enfrentan equipos de ranking bajo y parecido ({glue}`f610_d_clasif` posiciones de diferencia en mediana). {glue}`f610_frase` No se dibuja {glue}`f610_exc`, porque tiene menos de 30 partidos.
+En la FIVB, la tasa de upsets es mayor en la {glue}`f610_max_etapa` ({glue}`f610_max`) y menor en la {glue}`f610_min_etapa` ({glue}`f610_min`) (Figura 6.11). La explicación está en la distancia entre rivales: en la fase de grupos los rivales están separados, en mediana, por {glue}`f610_d_grupos` posiciones, mientras que en semifinales y finales solo por {glue}`f610_d_semis`; a menor distancia, más sorpresas. La clasificatoria tiene la tasa más alta, pero también la muestra más pequeña con ranking: ahí se enfrentan equipos de ranking bajo y parecido ({glue}`f610_d_clasif` posiciones de diferencia en mediana). {glue}`f610_frase` No se dibuja {glue}`f610_exc`, porque tiene menos de 30 partidos.
 
 ### Diferencias de pareja
 
@@ -672,7 +732,7 @@ fig.update_yaxes(title_text="% de victorias", ticksuffix=" %", range=[35, 65], r
 fig
 ```
 
-**Figura 6.11.** Tasa de victoria según la ventaja de estatura y de edad sobre el rival.
+**Figura 6.12.** Tasa de victoria según la ventaja de estatura y de edad sobre el rival.
 
 ```{code-cell} ipython3
 :tags: [remove-cell]
@@ -687,7 +747,7 @@ pegar("f611_est_menos10", fmt_pct(ve["< −10"]))
 pegar("f611_edad_mas5", fmt_pct(va["≥ 5"]))
 ```
 
-Una pareja 10 cm o más alta que su rival gana el {glue}`f611_est_mas10` de las veces, y una 10 cm o más baja, solo el {glue}`f611_est_menos10` (Figura 6.11). La ventaja de edad pesa menos: con 5 años o más de ventaja, la tasa de victoria es del {glue}`f611_edad_mas5`. La curva es simétrica por construcción, porque cada partido aporta una ventaja +x para una pareja y −x para la otra. Las diferencias entre compañeros de una misma pareja están en la Tabla 6.2 y no se asocian con el resultado.
+Una pareja 10 cm o más alta que su rival gana el {glue}`f611_est_mas10` de las veces, y una 10 cm o más baja, solo el {glue}`f611_est_menos10` (Figura 6.12). La ventaja de edad pesa menos: con 5 años o más de ventaja, la tasa de victoria es del {glue}`f611_edad_mas5`. La curva es simétrica por construcción, porque cada partido aporta una ventaja +x para una pareja y −x para la otra. Las diferencias entre compañeros de una misma pareja están en la Tabla 6.2 y no se asocian con el resultado.
 
 ### Estadísticas de juego (solo AVP)
 
@@ -707,7 +767,7 @@ fig.update_layout(height=650)
 estilo_plotly(fig, "Estadísticas de juego del equipo según resultado (solo AVP)", "", "")
 ```
 
-**Figura 6.12.** Estadísticas de juego del equipo según resultado (solo AVP con estadísticas completas).
+**Figura 6.13.** Estadísticas de juego del equipo según resultado (solo AVP con estadísticas completas).
 
 ```{code-cell} ipython3
 :tags: [remove-cell]
@@ -729,7 +789,7 @@ pegar("b_clasif", fmt_pct(perd_clasif[1], 0))
 pegar("b_directo", fmt_pct(perd_clasif[0], 0))
 ```
 
-En los {glue}`f612_n` partidos de la AVP con estadísticas, el ganador tiene una mediana más alta en {glue}`f612_mayores` (Figura 6.12), y menos errores de ataque: {glue}`f612_err_g` frente a {glue}`f612_err_p`. La mayor separación está en el {glue}`f612_top` (RBC = {glue}`f612_top_rbc`): el ganador convierte más de sus ataques y falla menos. Este resultado describe a la AVP de 2003 a 2019 y no se generaliza a la FIVB.
+En los {glue}`f612_n` partidos de la AVP con estadísticas, el ganador tiene una mediana más alta en {glue}`f612_mayores` (Figura 6.13), y menos errores de ataque: {glue}`f612_err_g` frente a {glue}`f612_err_p`. La mayor separación está en el {glue}`f612_top` (RBC = {glue}`f612_top_rbc`): el ganador convierte más de sus ataques y falla menos. Este resultado describe a la AVP de 2003 a 2019 y no se generaliza a la FIVB.
 
 ```{admonition} Para el entrenador
 :class: tip
@@ -763,7 +823,7 @@ fig.update_layout(height=560)
 estilo_plotly(fig, "Matriz de correlación de Spearman entre variables del equipo", "", "")
 ```
 
-**Figura 6.13.** Matriz de correlación de Spearman entre variables del equipo.
+**Figura 6.14.** Matriz de correlación de Spearman entre variables del equipo.
 
 ```{code-cell} ipython3
 :tags: [remove-cell]
@@ -787,7 +847,7 @@ pegar("f613_est_h", fmt(rho_est_rank["M"]))
 pegar("f613_est_m", fmt(rho_est_rank["W"]))
 ```
 
-Ninguna correlación es fuerte (Figura 6.13). Las más altas en valor absoluto son entre {glue}`f613_par1` (rho = {glue}`f613_rho1`) y entre {glue}`f613_par2` (rho = {glue}`f613_rho2`); el resto no supera {glue}`f613_resto` en valor absoluto. Las parejas de más edad tienden a tener un mejor ranking (un número más bajo) y a combinar compañeros de edades más distintas, como un veterano con un jugador joven. El ranking propio y el del rival casi no se relacionan (rho = {glue}`f613_rho_rival`), lo esperable en torneos donde se cruzan equipos de todos los niveles. La estatura mezcla hombres y mujeres; separada por género, su correlación con el ranking es de {glue}`f613_est_h` en hombres y {glue}`f613_est_m` en mujeres: los hombres más altos tienden a estar algo mejor rankeados.
+Ninguna correlación es fuerte (Figura 6.14). Las más altas en valor absoluto son entre {glue}`f613_par1` (rho = {glue}`f613_rho1`) y entre {glue}`f613_par2` (rho = {glue}`f613_rho2`); el resto no supera {glue}`f613_resto` en valor absoluto. Las parejas de más edad tienden a tener un mejor ranking (un número más bajo) y a combinar compañeros de edades más distintas, como un veterano con un jugador joven. El ranking propio y el del rival casi no se relacionan (rho = {glue}`f613_rho_rival`), lo esperable en torneos donde se cruzan equipos de todos los niveles. La estatura mezcla hombres y mujeres; separada por género, su correlación con el ranking es de {glue}`f613_est_h` en hombres y {glue}`f613_est_m` en mujeres: los hombres más altos tienden a estar algo mejor rankeados.
 
 ```{code-cell} ipython3
 rho_g = triangulo(lg[lg.resultado == "Ganador"])
@@ -807,7 +867,7 @@ fig.update_yaxes(autorange="reversed")
 fig
 ```
 
-**Figura 6.14.** Correlación de Spearman según resultado (Ganador vs Perdedor).
+**Figura 6.15.** Correlación de Spearman según resultado (Ganador vs Perdedor).
 
 ```{code-cell} ipython3
 :tags: [remove-cell]
@@ -826,7 +886,7 @@ pegar("f614_dur_propio", fmt(dur["Ganador"]["rank_main"]))
 pegar("f614_dur_rival", fmt(dur["Ganador"]["rank_rival"]))
 ```
 
-Las matrices de ganadores y perdedores se parecen en casi todo (Figura 6.14). La excepción está en la duración: su mayor diferencia es de {glue}`f614_dmax` en el par {glue}`f614_par`, y la siguiente diferencia relevante cae a {glue}`f614_sig`. Visto desde los ganadores, la duración casi no depende de su propio ranking (rho = {glue}`f614_dur_propio`), pero sí del ranking de su rival (rho = {glue}`f614_dur_rival`): **los partidos se alargan cuando la pareja que pierde es buena**. Las dos matrices son espejo una de la otra, porque el ranking propio del ganador es el ranking rival del perdedor. Fuera de ese par, las variables no se relacionan de forma distinta según el resultado.
+Las matrices de ganadores y perdedores se parecen en casi todo (Figura 6.15). La excepción está en la duración: su mayor diferencia es de {glue}`f614_dmax` en el par {glue}`f614_par`, y la siguiente diferencia relevante cae a {glue}`f614_sig`. Visto desde los ganadores, la duración casi no depende de su propio ranking (rho = {glue}`f614_dur_propio`), pero sí del ranking de su rival (rho = {glue}`f614_dur_rival`): **los partidos se alargan cuando la pareja que pierde es buena**. Las dos matrices son espejo una de la otra, porque el ranking propio del ganador es el ranking rival del perdedor. Fuera de ese par, las variables no se relacionan de forma distinta según el resultado.
 
 ### Redundancia entre variables previas al partido (VIF)
 

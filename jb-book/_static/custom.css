@@ -1,19 +1,39 @@
-   /* Estilos propios del libro (Jupyter Book los carga automáticamente) */
+/* Estilos propios del libro (Jupyter Book los carga automáticamente).
+   Paleta única, la misma del dashboard: mar, turquesa, arena y coral. */
+html[data-theme="light"] {
+  --pst-color-primary: #0B3B5C;          /* mar: enlaces, menú activo */
+  --pst-color-secondary: #1A8A9A;        /* turquesa: acentos y hover */
+  --pst-color-link: #0B3B5C;
+  --pst-color-link-hover: #1A8A9A;
+}
+html[data-theme="dark"] {
+  --pst-color-primary: #86C7CE;
+  --pst-color-secondary: #D9A441;
+  --pst-color-link: #86C7CE;
+  --pst-color-link-hover: #D9A441;
+}
 
-   /* Modo oscuro: tablas y figuras como tarjetas blancas */
-   html[data-theme="dark"] div.cell_output {
-     background-color: #FFFFFF;
-     border-radius: 10px;
-     padding: 14px;
-     margin-top: 6px;
-     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
-   }
+/* Títulos en azul mar */
+html[data-theme="light"] .bd-article h1,
+html[data-theme="light"] .bd-article h2,
+html[data-theme="light"] .bd-article h3 { color: #0B3B5C; }
 
-   /* Recuadro "Para el entrenador" con el azul de la paleta */
-   div.admonition.tip {
-     border-left-color: #2166AC;
-   }
-   div.admonition.tip > .admonition-title {
-     background-color: #E8F1FA;
-     color: #1A1A1A;
-   }
+/* Modo oscuro: tablas y figuras como tarjetas blancas */
+html[data-theme="dark"] div.cell_output {
+  background-color: #FFFFFF;
+  border-radius: 10px;
+  padding: 14px;
+  margin-top: 6px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+}
+
+/* Recuadro "Para el entrenador" en color arena */
+div.admonition.tip { border-left-color: #D9A441; }
+div.admonition.tip > .admonition-title { background-color: #F4EBDD; color: #0B3B5C; }
+div.admonition.tip > .admonition-title::after { color: #D9A441; }
+
+/* Recuadros de nota y advertencia en turquesa y coral */
+div.admonition.note { border-left-color: #1A8A9A; }
+div.admonition.note > .admonition-title { background-color: #E3F1F2; color: #0B3B5C; }
+div.admonition.important { border-left-color: #E4572E; }
+div.admonition.important > .admonition-title { background-color: #FBE3DC; color: #0B3B5C; }

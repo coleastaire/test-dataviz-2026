@@ -23,7 +23,7 @@ jg = pd.read_csv(CLEAN + "vb_jugadores.csv", low_memory=False)
 JUG = ["w_p1", "w_p2", "l_p1", "l_p2"]
 ```
 
-La limpieza se hace una sola vez, con el script `py/limpieza.py`, que aplica doce pasos sobre el archivo original y escribe tres archivos limpios. La versión en R repite los mismos pasos y debe obtener las mismas cifras de control. Este capítulo resume qué se encontró y qué se decidió; ninguna fila se elimina por calidad salvo las que son lógicamente imposibles.
+La limpieza se hace una sola vez, con el script `py/limpieza.py`, que aplica doce pasos sobre el archivo original y escribe tres archivos limpios. Cada paso registra cifras de control que permiten verificar el resultado. Este capítulo resume qué se encontró y qué se decidió; ninguna fila se elimina por calidad salvo las que son lógicamente imposibles.
 
 ## Duplicados y llave del partido
 
@@ -94,9 +94,11 @@ fig = go.Figure()
 for grupo, color in [("FIVB", PAL["FIVB"]), ("AVP", PAL["AVP"]), ("Total", GRIS_TOTAL)]:
     s = na[na.grupo == grupo].set_index("familia").loc[orden]
     fig.add_bar(x=s.pct, y=s.index, orientation="h", name=grupo, marker_color=color,
+                text=[fmt_pct(v) for v in s.pct], textposition="outside", cliponaxis=False,
+                textfont=dict(size=10),
                 hovertemplate="%{y}<br>" + grupo + ": %{x:.1f} % vacías<extra></extra>")
 fig.update_layout(barmode="group", height=560)
-fig.update_xaxes(range=[0, 100], ticksuffix=" %")
+fig.update_xaxes(range=[0, 112], ticksuffix=" %", tickvals=[0, 20, 40, 60, 80, 100])
 estilo_plotly(fig, "Porcentaje de celdas vacías por familia de variables y circuito",
               "% de celdas vacías", "")
 ```

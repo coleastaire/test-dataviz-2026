@@ -124,7 +124,7 @@ e["texto"] = [f"{fmt(n, 0)} ({fmt_pct(p)})" for n, p in zip(e.n, e.pct)]
 fig = go.Figure(go.Bar(
     x=e.n, y=e.etapa, orientation="h",
     marker_color=[PAL_ETAPA[x] for x in e.etapa],
-    marker_line=dict(color="#737373", width=0.5),
+    marker_line=dict(color="white", width=0.5),
     text=e.texto, textposition="outside", customdata=e.pct,
     hovertemplate="%{y}<br>Partidos: %{x:,}<br>%{customdata:.1f} % del total<extra></extra>"))
 fig.update_yaxes(autorange="reversed")

@@ -1,11 +1,11 @@
-title: "Voleibol de playa: qué hace ganar a una pareja"
+title: "¿Qué hace ganar a una pareja de voleibol de playa?"
 author: Nicolle Ramírez y Roger Daza
 copyright: "2026"
 language: es
 
 execute:
   execute_notebooks: cache
-  timeout: 600
+  timeout: 1800
 
 only_build_toc_files: true
 
@@ -19,6 +19,8 @@ sphinx:
     language: es
     html_context:
       default_mode: light
+    html_theme_options:
+      secondary_sidebar_items: []
     html_show_copyright: true
     bibtex_reference_style: label
     bibtex_default_style: es

@@ -59,11 +59,12 @@ La pregunta que guía todo el análisis es:
 
 > **¿Qué factores, medibles antes del partido, se asocian con que una pareja gane, y cómo puede usarlos un entrenador para preparar partidos y armar parejas?**
 
-De ella se derivan tres preguntas concretas que el libro responde con datos:
+De ella se derivan cuatro preguntas concretas que el libro responde con datos:
 
 1. **Preparar un partido:** dada la diferencia de ranking con el rival, ¿qué tan probable es ganar? ¿En qué etapas del torneo son más frecuentes las sorpresas?
 2. **Armar parejas:** ¿la estatura, la edad o la diferencia entre compañeros se asocian con ganar más?
 3. **Priorizar el entrenamiento:** ¿qué acciones de juego (aces, bloqueos, ataques, defensas) separan más al ganador del perdedor?
+4. **Anticipar resultados:** ¿un modelo con toda la información previa al partido predice mejor que la regla simple de "gana el mejor rankeado"?
 
 ## Planteamiento del problema
 
@@ -85,4 +86,4 @@ Este análisis aporta tres cosas:
 
 1. **Evidencia sobre veinte años de competencia.** Más de {glue}`c1_n_miles` partidos permiten distinguir patrones reales de casos anecdóticos.
 2. **Límites claros.** El libro dice qué se puede concluir y qué no: por ejemplo, que las estadísticas de juego solo describen a la AVP, o que una asociación no prueba que un factor cause la victoria.
-3. **Una base reproducible para el dashboard.** Cada cifra se calcula con el mismo código en Python y en R, de modo que el dashboard final para el entrenador se apoye en resultados verificados en dos herramientas distintas.
+3. **Una base reproducible para el dashboard.** Cada cifra sale del mismo proceso de limpieza y análisis, con una semilla fija, de modo que el dashboard para el entrenador se apoye en resultados verificables.
