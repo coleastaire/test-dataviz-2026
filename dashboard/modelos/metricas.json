@@ -1,0 +1,436 @@
+{
+ "generado": "2026-11-01 07:59:33",
+ "segundos": 175.0,
+ "versiones": {
+  "python": "3.12.3",
+  "scikit-learn": "1.9.1",
+  "pandas": "3.1.0",
+  "numpy": "2.5.4"
+ },
+ "datos_sha256": {
+  "equipos.parquet": "23da75013b02afb3455f3e4f6a74535b5676b37bff50ec70371f8e36f5d0c62e",
+  "partidos.parquet": "8992ea1616d60dcca5b0e029698d59132843451b5dd4bf3b37ced90e64a94c9d"
+ },
+ "politica": {
+  "semilla": 2026,
+  "unidad": "Un partido = una fila. De las dos filas de cada partido (ganador y perdedor) se conserva una al azar con numpy.random.default_rng(semilla) sobre la tabla ordenada por match_id y resultado. La variable respuesta es 'gana' (1 si esa pareja ganó).",
+  "division": "GroupShuffleSplit por match_id, 75 % entrenamiento y 25 % prueba, semilla fija. Se verifica que ningún match_id esté en los dos conjuntos.",
+  "validacion_cruzada": "StratifiedGroupKFold de 5 pliegues (agrupado por match_id) dentro del entrenamiento. El modelo recomendado se elige con esta AUC, no con la prueba.",
+  "preprocesamiento": "Pipeline de scikit-learn ajustado solo con entrenamiento: imputación por mediana con indicador de faltante (ranking ausente = pareja sin ranking numérico), estandarización (solo regresión logística) y variables indicadoras de circuito, género y etapa.",
+  "predictores": [
+   "ventaja_rank",
+   "edad_media",
+   "ventaja_edad",
+   "estatura_media_cm",
+   "ventaja_estatura_cm",
+   "es_clasif",
+   "es_clasif_rival",
+   "circuit",
+   "gender",
+   "etapa"
+  ],
+  "etiquetas_predictores": {
+   "ventaja_rank": "Ventaja de ranking",
+   "edad_media": "Edad media",
+   "ventaja_edad": "Ventaja de edad",
+   "estatura_media_cm": "Estatura media",
+   "ventaja_estatura_cm": "Ventaja de estatura",
+   "es_clasif": "Viene de clasificatoria",
+   "es_clasif_rival": "Rival viene de clasificatoria",
+   "circuit": "Circuito",
+   "gender": "Género",
+   "etapa": "Etapa del torneo"
+  },
+  "excluidas_por_fuga": [
+   "aces",
+   "attacks",
+   "blocks",
+   "digs",
+   "duracion_min",
+   "errors",
+   "es_forfeit",
+   "es_retirado",
+   "es_upset",
+   "hitpct",
+   "kills",
+   "l_rank",
+   "n_sets",
+   "puntos_totales",
+   "rank_diff",
+   "resultado",
+   "serve_errors",
+   "tiene_stats_completas",
+   "w_rank"
+  ],
+  "descartes": {
+   "partidos_iniciales": 76749,
+   "partidos_sin_un_ganador_y_un_perdedor": 0,
+   "partidos_forfeit": 909,
+   "partidos_modelo": 75840
+  },
+  "n_entrenamiento": 56880,
+  "n_prueba": 18960,
+  "pct_gana_entrenamiento": 50.031646,
+  "pct_gana_prueba": 49.810127,
+  "huella_ids_prueba": "f4449652f11a6f028925f0749ac9b1bcf4e1bf96ba7ac38a1ead31fbbfe8e1cb",
+  "alcance": "Partidos FIVB y AVP de 2000 a 2019. Asociaciones observacionales, no causales."
+ },
+ "modelos": {
+  "Regresión logística": {
+   "auc_cv_media": 0.732447,
+   "auc_cv_de": 0.006522,
+   "auc_cv_pliegues": [
+    0.736757,
+    0.741661,
+    0.727714,
+    0.729729,
+    0.726372
+   ],
+   "prueba": {
+    "accuracy": 0.666825,
+    "precision": 0.667309,
+    "recall": 0.660313,
+    "f1": 0.663793,
+    "roc_auc": 0.727994,
+    "brier": 0.211053,
+    "n": 18960
+   },
+   "prueba_con_ranking": {
+    "accuracy": 0.698165,
+    "precision": 0.695394,
+    "recall": 0.69859,
+    "f1": 0.696988,
+    "roc_auc": 0.757495,
+    "brier": 0.200391,
+    "n": 13133
+   },
+   "matriz_confusion": {
+    "etiquetas": [
+     "Gana",
+     "Pierde"
+    ],
+    "valores": [
+     [
+      6236,
+      3208
+     ],
+     [
+      3109,
+      6407
+     ]
+    ]
+   },
+   "hiperparametros": "L2, C = 1, max_iter = 2000; predictores numéricos estandarizados"
+  },
+  "Random Forest": {
+   "auc_cv_media": 0.744938,
+   "auc_cv_de": 0.007813,
+   "auc_cv_pliegues": [
+    0.748887,
+    0.756839,
+    0.73857,
+    0.741048,
+    0.739348
+   ],
+   "prueba": {
+    "accuracy": 0.670939,
+    "precision": 0.672367,
+    "recall": 0.661902,
+    "f1": 0.667094,
+    "roc_auc": 0.738813,
+    "brier": 0.207589,
+    "n": 18960
+   },
+   "prueba_con_ranking": {
+    "accuracy": 0.698622,
+    "precision": 0.693141,
+    "recall": 0.706099,
+    "f1": 0.69956,
+    "roc_auc": 0.764798,
+    "brier": 0.198319,
+    "n": 13133
+   },
+   "matriz_confusion": {
+    "etiquetas": [
+     "Gana",
+     "Pierde"
+    ],
+    "valores": [
+     [
+      6251,
+      3193
+     ],
+     [
+      3046,
+      6470
+     ]
+    ]
+   },
+   "hiperparametros": "200 árboles, min_samples_leaf = 50, max_features = sqrt"
+  },
+  "Gradient Boosting": {
+   "auc_cv_media": 0.745911,
+   "auc_cv_de": 0.00707,
+   "auc_cv_pliegues": [
+    0.750498,
+    0.755971,
+    0.739811,
+    0.743041,
+    0.740233
+   ],
+   "prueba": {
+    "accuracy": 0.670675,
+    "precision": 0.666424,
+    "recall": 0.67842,
+    "f1": 0.672369,
+    "roc_auc": 0.739695,
+    "brier": 0.206261,
+    "n": 18960
+   },
+   "prueba_con_ranking": {
+    "accuracy": 0.698089,
+    "precision": 0.689732,
+    "recall": 0.713301,
+    "f1": 0.701318,
+    "roc_auc": 0.764377,
+    "brier": 0.197498,
+    "n": 13133
+   },
+   "matriz_confusion": {
+    "etiquetas": [
+     "Gana",
+     "Pierde"
+    ],
+    "valores": [
+     [
+      6407,
+      3037
+     ],
+     [
+      3207,
+      6309
+     ]
+    ]
+   },
+   "hiperparametros": "250 árboles, learning_rate = 0,05, max_depth = 3, subsample = 0,8"
+  }
+ },
+ "regla": {
+  "accuracy": 0.697403,
+  "precision": 0.693685,
+  "recall": 0.700276,
+  "f1": 0.696965,
+  "roc_auc": 0.750801,
+  "n": 13133,
+  "cobertura_prueba_pct": 69.266878,
+  "cobertura_total_pct": 69.525316,
+  "partidos_sin_ranking_de_alguna_pareja_pct": 30.733122,
+  "partidos_con_empate_de_ranking_pct": 0.0
+ },
+ "recomendado": "Gradient Boosting",
+ "razon": "Gradient Boosting tiene la mayor AUC media en la validación cruzada de entrenamiento (0,746 ± 0,007; Regresión logística 0,732, Random Forest 0,745). La regresión logística, más fácil de interpretar, queda a más de una desviación estándar, así que no se prefiere. La elección no usa el conjunto de prueba.",
+ "importancias": {
+  "Regresión logística": [
+   {
+    "variable": "ventaja_rank",
+    "etiqueta": "Ventaja de ranking",
+    "media": 0.207016,
+    "de": 0.00359
+   },
+   {
+    "variable": "estatura_media_cm",
+    "etiqueta": "Estatura media",
+    "media": 0.028278,
+    "de": 0.001581
+   },
+   {
+    "variable": "ventaja_estatura_cm",
+    "etiqueta": "Ventaja de estatura",
+    "media": 0.023591,
+    "de": 0.001524
+   },
+   {
+    "variable": "es_clasif",
+    "etiqueta": "Viene de clasificatoria",
+    "media": 0.013328,
+    "de": 0.000966
+   },
+   {
+    "variable": "es_clasif_rival",
+    "etiqueta": "Rival viene de clasificatoria",
+    "media": 0.008636,
+    "de": 0.000712
+   },
+   {
+    "variable": "edad_media",
+    "etiqueta": "Edad media",
+    "media": 0.007585,
+    "de": 0.000422
+   },
+   {
+    "variable": "ventaja_edad",
+    "etiqueta": "Ventaja de edad",
+    "media": 0.004005,
+    "de": 0.000159
+   },
+   {
+    "variable": "circuit",
+    "etiqueta": "Circuito",
+    "media": 0.000148,
+    "de": 6.2e-05
+   },
+   {
+    "variable": "etapa",
+    "etiqueta": "Etapa del torneo",
+    "media": 0.000129,
+    "de": 6.9e-05
+   },
+   {
+    "variable": "gender",
+    "etiqueta": "Género",
+    "media": -3.1e-05,
+    "de": 4.1e-05
+   }
+  ],
+  "Random Forest": [
+   {
+    "variable": "ventaja_rank",
+    "etiqueta": "Ventaja de ranking",
+    "media": 0.191131,
+    "de": 0.002586
+   },
+   {
+    "variable": "es_clasif",
+    "etiqueta": "Viene de clasificatoria",
+    "media": 0.035936,
+    "de": 0.001039
+   },
+   {
+    "variable": "es_clasif_rival",
+    "etiqueta": "Rival viene de clasificatoria",
+    "media": 0.0325,
+    "de": 0.00097
+   },
+   {
+    "variable": "estatura_media_cm",
+    "etiqueta": "Estatura media",
+    "media": 0.021055,
+    "de": 0.001111
+   },
+   {
+    "variable": "ventaja_estatura_cm",
+    "etiqueta": "Ventaja de estatura",
+    "media": 0.015263,
+    "de": 0.000552
+   },
+   {
+    "variable": "etapa",
+    "etiqueta": "Etapa del torneo",
+    "media": 0.009729,
+    "de": 0.000568
+   },
+   {
+    "variable": "circuit",
+    "etiqueta": "Circuito",
+    "media": 0.00643,
+    "de": 0.000211
+   },
+   {
+    "variable": "edad_media",
+    "etiqueta": "Edad media",
+    "media": 0.004025,
+    "de": 0.000409
+   },
+   {
+    "variable": "ventaja_edad",
+    "etiqueta": "Ventaja de edad",
+    "media": 0.003729,
+    "de": 0.000406
+   },
+   {
+    "variable": "gender",
+    "etiqueta": "Género",
+    "media": 0.001269,
+    "de": 0.000101
+   }
+  ],
+  "Gradient Boosting": [
+   {
+    "variable": "ventaja_rank",
+    "etiqueta": "Ventaja de ranking",
+    "media": 0.214837,
+    "de": 0.002458
+   },
+   {
+    "variable": "es_clasif",
+    "etiqueta": "Viene de clasificatoria",
+    "media": 0.051703,
+    "de": 0.001239
+   },
+   {
+    "variable": "es_clasif_rival",
+    "etiqueta": "Rival viene de clasificatoria",
+    "media": 0.039265,
+    "de": 0.001307
+   },
+   {
+    "variable": "estatura_media_cm",
+    "etiqueta": "Estatura media",
+    "media": 0.017775,
+    "de": 0.000852
+   },
+   {
+    "variable": "ventaja_estatura_cm",
+    "etiqueta": "Ventaja de estatura",
+    "media": 0.016457,
+    "de": 0.00064
+   },
+   {
+    "variable": "etapa",
+    "etiqueta": "Etapa del torneo",
+    "media": 0.015965,
+    "de": 0.000857
+   },
+   {
+    "variable": "edad_media",
+    "etiqueta": "Edad media",
+    "media": 0.00767,
+    "de": 0.000586
+   },
+   {
+    "variable": "circuit",
+    "etiqueta": "Circuito",
+    "media": 0.005274,
+    "de": 0.000361
+   },
+   {
+    "variable": "ventaja_edad",
+    "etiqueta": "Ventaja de edad",
+    "media": 0.004341,
+    "de": 0.000306
+   },
+   {
+    "variable": "gender",
+    "etiqueta": "Género",
+    "media": 1e-05,
+    "de": 1.4e-05
+   }
+  ]
+ },
+ "temporal": {
+  "modelo": "Gradient Boosting",
+  "n_entrenamiento": 60886,
+  "n_prueba": 14954,
+  "prueba": {
+   "accuracy": 0.632874,
+   "precision": 0.648688,
+   "recall": 0.588642,
+   "f1": 0.617208,
+   "roc_auc": 0.689025,
+   "brier": 0.22434,
+   "n": 14954
+  },
+  "regla_accuracy": 0.659702,
+  "regla_n": 10338
+ }
+}

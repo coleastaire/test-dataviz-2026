@@ -1,0 +1,55 @@
+/* Estilo inspirado en el libro de referencia (Jupyter Book): sobrio, tipografía sans, tablas limpias */
+:root { --azul: #1a5fb4; --gris: #5f6368; --borde: #d9dde3; }
+
+.book .book-body .page-wrapper .page-inner section.normal {
+  font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  color: #1f2328;
+  line-height: 1.6;
+}
+.book .book-body .page-wrapper .page-inner { max-width: 880px; }
+
+/* Títulos de capítulo centrados y sin número (el número queda en la barra lateral) */
+section.normal h1 {
+  text-align: center;
+  font-size: 2.6em;
+  font-weight: 600;
+  margin: 0.4em 0 0.8em;
+}
+section.normal h1 .header-section-number { display: none; }
+section.normal h2 { font-size: 1.9em; font-weight: 600; margin-top: 1.6em; }
+section.normal h3 { font-size: 1.35em; font-weight: 600; margin-top: 1.4em; }
+section.normal a { color: var(--azul); }
+
+/* Bloque "Contenido" que se genera al inicio de cada capítulo */
+#contenido-local h2 { font-size: 1.9em; margin-top: 0.4em; }
+#contenido-local ul { margin-top: 0; }
+#contenido-local li { margin: 0.15em 0; }
+
+/* Tablas y figuras */
+table { border-collapse: collapse; margin: 1em auto; font-size: 0.93em; }
+table thead th { border-bottom: 2px solid #333; text-align: left; padding: 6px 10px; }
+table td { border-bottom: 1px solid var(--borde); padding: 6px 10px; }
+table caption, p.caption { color: var(--gris); text-align: left; margin: 10px 0; font-size: 0.95em; }
+p code { white-space: inherit; }
+pre { word-break: normal; word-wrap: normal; }
+pre code { white-space: inherit; }
+
+/* Recuadro «Para el entrenador» */
+.entrenador {
+  border-left: 5px solid #2a9d8f;
+  background: #eef8f6;
+  padding: 0.8em 1.2em;
+  margin: 1.6em 0;
+  border-radius: 0 6px 6px 0;
+}
+.entrenador p:first-child { margin-top: 0; }
+.entrenador p:last-child, .entrenador ul:last-child { margin-bottom: 0; }
+
+/* Recuadro de advertencia / nota */
+.nota {
+  border-left: 5px solid #e9a23b;
+  background: #fff7ea;
+  padding: 0.8em 1.2em;
+  margin: 1.4em 0;
+  border-radius: 0 6px 6px 0;
+}

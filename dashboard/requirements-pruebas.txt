@@ -1,0 +1,4 @@
+# Solo para correr las pruebas (no hace falta para ver el dashboard)
+-r requirements.txt
+pytest>=8
+playwright>=1.45

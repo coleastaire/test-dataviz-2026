@@ -1,0 +1,22 @@
+{
+  "p0_filas_crudas": 76756.0,
+  "p1_partidos_bd_corregida": 7232.0,
+  "p2_duracion_na": 2249.0,
+  "p3_pais_desconocido": 45.0,
+  "p4_w_rank_main_validos": 64869.0,
+  "p4_l_rank_main_validos": 53440.0,
+  "p5_forfeit": 915.0,
+  "p5_retirado": 174.0,
+  "p6_etapa_otra": 0.0,
+  "p7_filas_invalidas": 7.0,
+  "p7_match_id_duplicados": 0.0,
+  "p7_filas_finales": 76749.0,
+  "p8_stats_completas": 14571.0,
+  "p8_stats_basicas": 16189.0,
+  "p8_celdas_invalidas": 64.0,
+  "p9_edad_inconsistente": 460.0,
+  "p10_partidos_con_ambos_rank": 53375.0,
+  "p10_pct_upset": 29.914754098360657,
+  "p11_filas_long": 153498.0,
+  "p11_filas_jugadores": 306996.0
+}

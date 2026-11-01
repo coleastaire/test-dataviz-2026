@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="es" xml:lang="es">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Capítulo 4 Descripción del conjunto de datos | Voleibol de playa: qué hace ganar a una pareja</title>
+  <meta name="description" content="Libro de análisis exploratorio de datos sobre 76.749 partidos de voleibol de playa (FIVB y AVP, 2000-2019), pensado para un entrenador que arma parejas y prepara partidos. Versión en R (bookdown)." />
+  <meta name="generator" content="bookdown 0.48 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Capítulo 4 Descripción del conjunto de datos | Voleibol de playa: qué hace ganar a una pareja" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:description" content="Libro de análisis exploratorio de datos sobre 76.749 partidos de voleibol de playa (FIVB y AVP, 2000-2019), pensado para un entrenador que arma parejas y prepara partidos. Versión en R (bookdown)." />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Capítulo 4 Descripción del conjunto de datos | Voleibol de playa: qué hace ganar a una pareja" />
+  
+  <meta name="twitter:description" content="Libro de análisis exploratorio de datos sobre 76.749 partidos de voleibol de playa (FIVB y AVP, 2000-2019), pensado para un entrenador que arma parejas y prepara partidos. Versión en R (bookdown)." />
+  
+
+<meta name="author" content="Nicolle Ramírez y Roger Daza" />
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="metodologia.html"/>
+<link rel="next" href="limpieza.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<link href="libs/htmltools-fill-0.5.9/fill.css" rel="stylesheet" />
+<script src="libs/htmlwidgets-1.6.4/htmlwidgets.js"></script>
+<link href="libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet" />
+<script src="libs/datatables-binding-0.34.0/datatables.js"></script>
+<link href="libs/dt-core-1.13.6/css/jquery.dataTables.min.css" rel="stylesheet" />
+<link href="libs/dt-core-1.13.6/css/jquery.dataTables.extra.css" rel="stylesheet" />
+<script src="libs/dt-core-1.13.6/js/jquery.dataTables.min.js"></script>
+<link href="libs/crosstalk-1.2.2/css/crosstalk.min.css" rel="stylesheet" />
+<script src="libs/crosstalk-1.2.2/js/crosstalk.min.js"></script>
+
+
+<style type="text/css">
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./"><strong>Voleibol de playa</strong></a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Prefacio</a>
+<ul>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#c%C3%B3mo-leer-este-libro"><i class="fa fa-check"></i>Cómo leer este libro</a></li>
+</ul></li>
+<li class="chapter" data-level="1" data-path="contexto.html"><a href="contexto.html"><i class="fa fa-check"></i><b>1</b> Contexto</a>
+<ul>
+<li class="chapter" data-level="" data-path="contexto.html"><a href="contexto.html#el-voleibol-de-playa-y-los-circuitos-fivb-y-avp"><i class="fa fa-check"></i>El voleibol de playa y los circuitos FIVB y AVP</a></li>
+<li class="chapter" data-level="" data-path="contexto.html"><a href="contexto.html#pregunta-de-investigaci%C3%B3n-y-usuario-del-an%C3%A1lisis"><i class="fa fa-check"></i>Pregunta de investigación y usuario del análisis</a></li>
+<li class="chapter" data-level="" data-path="contexto.html"><a href="contexto.html#planteamiento-del-problema"><i class="fa fa-check"></i>Planteamiento del problema</a></li>
+<li class="chapter" data-level="" data-path="contexto.html"><a href="contexto.html#justificaci%C3%B3n"><i class="fa fa-check"></i>Justificación</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="objetivos.html"><a href="objetivos.html"><i class="fa fa-check"></i><b>2</b> Objetivos</a>
+<ul>
+<li class="chapter" data-level="" data-path="objetivos.html"><a href="objetivos.html#objetivo-general"><i class="fa fa-check"></i>Objetivo general</a></li>
+<li class="chapter" data-level="" data-path="objetivos.html"><a href="objetivos.html#objetivos-espec%C3%ADficos"><i class="fa fa-check"></i>Objetivos específicos</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="metodologia.html"><a href="metodologia.html"><i class="fa fa-check"></i><b>3</b> Metodología</a>
+<ul>
+<li class="chapter" data-level="" data-path="metodologia.html"><a href="metodologia.html#marco-te%C3%B3rico"><i class="fa fa-check"></i>Marco teórico</a>
+<ul>
+<li class="chapter" data-level="3.0.1" data-path="metodologia.html"><a href="metodologia.html#an%C3%A1lisis-exploratorio-de-datos"><i class="fa fa-check"></i><b>3.0.1</b> Análisis exploratorio de datos</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="metodologia.html"><a href="metodologia.html#tratamiento-estad%C3%ADstico-y-pruebas-no-param%C3%A9tricas"><i class="fa fa-check"></i>Tratamiento estadístico y pruebas no paramétricas</a></li>
+<li class="chapter" data-level="" data-path="metodologia.html"><a href="metodologia.html#an%C3%A1lisis-de-solapamiento"><i class="fa fa-check"></i>Análisis de solapamiento</a></li>
+<li class="chapter" data-level="" data-path="metodologia.html"><a href="metodologia.html#an%C3%A1lisis-multivariado-y-redundancia"><i class="fa fa-check"></i>Análisis multivariado y redundancia</a></li>
+<li class="chapter" data-level="" data-path="metodologia.html"><a href="metodologia.html#fases-del-procesamiento"><i class="fa fa-check"></i>Fases del procesamiento</a></li>
+<li class="chapter" data-level="" data-path="metodologia.html"><a href="metodologia.html#herramientas"><i class="fa fa-check"></i>Herramientas</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="datos.html"><a href="datos.html"><i class="fa fa-check"></i><b>4</b> Descripción del conjunto de datos</a>
+<ul>
+<li class="chapter" data-level="" data-path="datos.html"><a href="datos.html#estructura-y-variables"><i class="fa fa-check"></i>Estructura y variables</a></li>
+<li class="chapter" data-level="" data-path="datos.html"><a href="datos.html#cobertura-por-circuito-g%C3%A9nero-y-etapa"><i class="fa fa-check"></i>Cobertura por circuito, género y etapa</a></li>
+<li class="chapter" data-level="" data-path="datos.html"><a href="datos.html#pa%C3%ADses-sede-y-de-procedencia"><i class="fa fa-check"></i>Países sede y de procedencia</a></li>
+<li class="chapter" data-level="" data-path="datos.html"><a href="datos.html#datos-at%C3%ADpicos"><i class="fa fa-check"></i>Datos atípicos</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="limpieza.html"><a href="limpieza.html"><i class="fa fa-check"></i><b>5</b> Limpieza y preparación</a>
+<ul>
+<li class="chapter" data-level="" data-path="limpieza.html"><a href="limpieza.html#duplicados-y-llave-del-partido"><i class="fa fa-check"></i>Duplicados y llave del partido</a></li>
+<li class="chapter" data-level="" data-path="limpieza.html"><a href="limpieza.html#valores-faltantes"><i class="fa fa-check"></i>Valores faltantes</a></li>
+<li class="chapter" data-level="" data-path="limpieza.html"><a href="limpieza.html#correcciones-de-calidad"><i class="fa fa-check"></i>Correcciones de calidad</a></li>
+<li class="chapter" data-level="" data-path="limpieza.html"><a href="limpieza.html#formato-largo-y-archivos-limpios"><i class="fa fa-check"></i>Formato largo y archivos limpios</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="eda.html"><a href="eda.html"><i class="fa fa-check"></i><b>6</b> Análisis exploratorio</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="eda.html"><a href="eda.html#an%C3%A1lisis-univariado"><i class="fa fa-check"></i><b>6.1</b> Análisis univariado</a>
+<ul>
+<li class="chapter" data-level="6.1.1" data-path="eda.html"><a href="eda.html#el-partido"><i class="fa fa-check"></i><b>6.1.1</b> El partido</a></li>
+<li class="chapter" data-level="6.1.2" data-path="eda.html"><a href="eda.html#los-jugadores-y-las-parejas"><i class="fa fa-check"></i><b>6.1.2</b> Los jugadores y las parejas</a></li>
+</ul></li>
+<li class="chapter" data-level="6.2" data-path="eda.html"><a href="eda.html#an%C3%A1lisis-bivariado"><i class="fa fa-check"></i><b>6.2</b> Análisis bivariado</a>
+<ul>
+<li class="chapter" data-level="6.2.1" data-path="eda.html"><a href="eda.html#parejas-ganadoras-frente-a-perdedoras"><i class="fa fa-check"></i><b>6.2.1</b> Parejas ganadoras frente a perdedoras</a></li>
+<li class="chapter" data-level="6.2.2" data-path="eda.html"><a href="eda.html#cu%C3%A1ndo-el-ranking-anticipa-el-resultado"><i class="fa fa-check"></i><b>6.2.2</b> Cuándo el ranking anticipa el resultado</a></li>
+<li class="chapter" data-level="6.2.3" data-path="eda.html"><a href="eda.html#estad%C3%ADsticas-de-juego-solo-para-una-parte-de-los-partidos"><i class="fa fa-check"></i><b>6.2.3</b> Estadísticas de juego (solo para una parte de los partidos)</a></li>
+</ul></li>
+<li class="chapter" data-level="6.3" data-path="eda.html"><a href="eda.html#an%C3%A1lisis-multivariado"><i class="fa fa-check"></i><b>6.3</b> Análisis multivariado</a>
+<ul>
+<li class="chapter" data-level="6.3.1" data-path="eda.html"><a href="eda.html#redundancia-entre-factores"><i class="fa fa-check"></i><b>6.3.1</b> Redundancia entre factores</a></li>
+<li class="chapter" data-level="6.3.2" data-path="eda.html"><a href="eda.html#aporte-conjunto-regresi%C3%B3n-log%C3%ADstica"><i class="fa fa-check"></i><b>6.3.2</b> Aporte conjunto: regresión logística</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="hallazgos.html"><a href="hallazgos.html"><i class="fa fa-check"></i><b>7</b> Hallazgos y recomendaciones</a>
+<ul>
+<li class="chapter" data-level="" data-path="hallazgos.html"><a href="hallazgos.html#hallazgos-principales"><i class="fa fa-check"></i>Hallazgos principales</a></li>
+<li class="chapter" data-level="" data-path="hallazgos.html"><a href="hallazgos.html#recomendaciones-para-el-entrenador"><i class="fa fa-check"></i>Recomendaciones para el entrenador</a></li>
+<li class="chapter" data-level="" data-path="hallazgos.html"><a href="hallazgos.html#limitaciones"><i class="fa fa-check"></i>Limitaciones</a></li>
+<li class="chapter" data-level="" data-path="hallazgos.html"><a href="hallazgos.html#pr%C3%B3ximos-pasos-el-dashboard"><i class="fa fa-check"></i>Próximos pasos: el dashboard</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="referencias.html"><a href="referencias.html"><i class="fa fa-check"></i>Referencias</a></li>
+<li class="divider"></li>
+<li><a>Nicolle Ramírez y Roger Daza</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Voleibol de playa: qué hace ganar a una pareja</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="datos" class="section level1 hasAnchor" number="4">
+<h1><span class="header-section-number">Capítulo 4</span> Descripción del conjunto de datos<a href="datos.html#datos" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>Este capítulo describe el conjunto de datos <strong>antes</strong> de cualquier análisis: qué variables contiene, cómo se reparten los partidos entre circuitos, géneros y etapas, de dónde vienen los jugadores y qué tan frecuentes son los valores atípicos. Todo se calcula sobre el archivo original, sin modificar.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="datos.html#cb1-1" tabindex="-1"></a>raw <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">&quot;vb_matches.csv&quot;</span>, <span class="at">col_types =</span> col_vb)</span></code></pre></div>
+<div id="estructura-y-variables" class="section level2 unnumbered hasAnchor">
+<h2>Estructura y variables<a href="datos.html#estructura-y-variables" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>El archivo original tiene <strong>76.756 partidos</strong> (filas) y <strong>65 columnas</strong>. Cada fila es un partido y cada partido tiene una pareja ganadora (prefijo <code>w_</code>, de <em>winner</em>) y una perdedora (prefijo <code>l_</code>, de <em>loser</em>). Cada pareja tiene dos jugadores (<code>p1</code> y <code>p2</code>).</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="datos.html#cb2-1" tabindex="-1"></a>estructura <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
+<span id="cb2-2"><a href="datos.html#cb2-2" tabindex="-1"></a>  <span class="at">Grupo =</span> <span class="fu">c</span>(<span class="st">&quot;Torneo&quot;</span>, <span class="st">&quot;Jugadores (4 posiciones)&quot;</span>, <span class="st">&quot;Ranking&quot;</span>, <span class="st">&quot;Resultado&quot;</span>,</span>
+<span id="cb2-3"><a href="datos.html#cb2-3" tabindex="-1"></a>            <span class="st">&quot;Estadísticas de juego (4 posiciones)&quot;</span>),</span>
+<span id="cb2-4"><a href="datos.html#cb2-4" tabindex="-1"></a>  <span class="at">Variables =</span> <span class="fu">c</span>(</span>
+<span id="cb2-5"><a href="datos.html#cb2-5" tabindex="-1"></a>    <span class="st">&quot;`circuit`, `tournament`, `country`, `year`, `date`, `gender`, `match_num`&quot;</span>,</span>
+<span id="cb2-6"><a href="datos.html#cb2-6" tabindex="-1"></a>    <span class="st">&quot;`player`, `birthdate`, `age`, `hgt`, `country` de `w_p1`, `w_p2`, `l_p1`, `l_p2`&quot;</span>,</span>
+<span id="cb2-7"><a href="datos.html#cb2-7" tabindex="-1"></a>    <span class="st">&quot;`w_rank`, `l_rank` (texto)&quot;</span>,</span>
+<span id="cb2-8"><a href="datos.html#cb2-8" tabindex="-1"></a>    <span class="st">&quot;`score`, `duration`, `bracket`, `round`&quot;</span>,</span>
+<span id="cb2-9"><a href="datos.html#cb2-9" tabindex="-1"></a>    <span class="st">&quot;`tot_attacks`, `tot_kills`, `tot_errors`, `tot_hitpct`, `tot_aces`, `tot_serve_errors`, `tot_blocks`, `tot_digs` de cada jugador&quot;</span>),</span>
+<span id="cb2-10"><a href="datos.html#cb2-10" tabindex="-1"></a>  <span class="at">Columnas =</span> <span class="fu">c</span>(<span class="dv">7</span>, <span class="dv">20</span>, <span class="dv">2</span>, <span class="dv">4</span>, <span class="dv">32</span>)</span>
+<span id="cb2-11"><a href="datos.html#cb2-11" tabindex="-1"></a>)</span>
+<span id="cb2-12"><a href="datos.html#cb2-12" tabindex="-1"></a><span class="fu">tabla</span>(estructura, <span class="at">caption =</span> <span class="st">&quot;Estructura del conjunto de datos original.&quot;</span>, <span class="at">digits =</span> <span class="dv">0</span>)</span></code></pre></div>
+<table style="width:100%;">
+<caption><span id="tab:tab-estructura">Tabla 4.1: </span>Estructura del conjunto de datos original.</caption>
+<colgroup>
+<col width="21%" />
+<col width="73%" />
+<col width="5%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">Grupo</th>
+<th align="left">Variables</th>
+<th align="right">Columnas</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Torneo</td>
+<td align="left"><code>circuit</code>, <code>tournament</code>, <code>country</code>, <code>year</code>, <code>date</code>, <code>gender</code>, <code>match_num</code></td>
+<td align="right">7</td>
+</tr>
+<tr class="even">
+<td align="left">Jugadores (4 posiciones)</td>
+<td align="left"><code>player</code>, <code>birthdate</code>, <code>age</code>, <code>hgt</code>, <code>country</code> de <code>w_p1</code>, <code>w_p2</code>, <code>l_p1</code>, <code>l_p2</code></td>
+<td align="right">20</td>
+</tr>
+<tr class="odd">
+<td align="left">Ranking</td>
+<td align="left"><code>w_rank</code>, <code>l_rank</code> (texto)</td>
+<td align="right">2</td>
+</tr>
+<tr class="even">
+<td align="left">Resultado</td>
+<td align="left"><code>score</code>, <code>duration</code>, <code>bracket</code>, <code>round</code></td>
+<td align="right">4</td>
+</tr>
+<tr class="odd">
+<td align="left">Estadísticas de juego (4 posiciones)</td>
+<td align="left"><code>tot_attacks</code>, <code>tot_kills</code>, <code>tot_errors</code>, <code>tot_hitpct</code>, <code>tot_aces</code>, <code>tot_serve_errors</code>, <code>tot_blocks</code>, <code>tot_digs</code> de cada jugador</td>
+<td align="right">32</td>
+</tr>
+</tbody>
+</table>
+<p>Para el entrenador, lo importante es que las variables se agrupan en tres tipos de información: <strong>quién juega</strong> (jugadores y ranking), <strong>dónde y cuándo</strong> (torneo) y <strong>cómo salió</strong> (resultado y estadísticas). Las estadísticas de juego no están disponibles para todos los partidos, como se verá más abajo.</p>
+<p>En total aparecen <strong>8.950 nombres de jugador distintos</strong>.</p>
+</div>
+<div id="cobertura-por-circuito-género-y-etapa" class="section level2 unnumbered hasAnchor">
+<h2>Cobertura por circuito, género y etapa<a href="datos.html#cobertura-por-circuito-g%C3%A9nero-y-etapa" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="datos.html#cb3-1" tabindex="-1"></a>raw <span class="sc">%&gt;%</span></span>
+<span id="cb3-2"><a href="datos.html#cb3-2" tabindex="-1"></a>  <span class="fu">count</span>(circuit, gender) <span class="sc">%&gt;%</span></span>
+<span id="cb3-3"><a href="datos.html#cb3-3" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> gender, <span class="at">values_from =</span> n) <span class="sc">%&gt;%</span></span>
+<span id="cb3-4"><a href="datos.html#cb3-4" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Total =</span> M <span class="sc">+</span> W, <span class="st">`</span><span class="at">% del total</span><span class="st">`</span> <span class="ot">=</span> <span class="dv">100</span> <span class="sc">*</span> Total <span class="sc">/</span> <span class="fu">sum</span>(Total)) <span class="sc">%&gt;%</span></span>
+<span id="cb3-5"><a href="datos.html#cb3-5" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">Circuito =</span> circuit, <span class="at">Hombres =</span> M, <span class="at">Mujeres =</span> W) <span class="sc">%&gt;%</span></span>
+<span id="cb3-6"><a href="datos.html#cb3-6" tabindex="-1"></a>  <span class="fu">tabla</span>(<span class="at">caption =</span> <span class="st">&quot;Partidos por circuito y género.&quot;</span>, <span class="at">digits =</span> <span class="dv">1</span>)</span></code></pre></div>
+<table>
+<caption><span id="tab:tab-circuito-genero">Tabla 4.2: </span>Partidos por circuito y género.</caption>
+<thead>
+<tr class="header">
+<th align="left">Circuito</th>
+<th align="right">Hombres</th>
+<th align="right">Mujeres</th>
+<th align="right">Total</th>
+<th align="right">% del total</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">AVP</td>
+<td align="right">13.995</td>
+<td align="right">11.358</td>
+<td align="right">25.353</td>
+<td align="right">33</td>
+</tr>
+<tr class="even">
+<td align="left">FIVB</td>
+<td align="right">26.275</td>
+<td align="right">25.128</td>
+<td align="right">51.403</td>
+<td align="right">67</td>
+</tr>
+</tbody>
+</table>
+<p>La FIVB concentra <strong>67,0 %</strong> de los partidos y la AVP el resto: dos a uno. El género está bastante equilibrado: <strong>52,5 %</strong> de los partidos son masculinos y <strong>47,5 %</strong> femeninos.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="datos.html#cb4-1" tabindex="-1"></a>raw <span class="sc">%&gt;%</span></span>
+<span id="cb4-2"><a href="datos.html#cb4-2" tabindex="-1"></a>  <span class="fu">count</span>(year, circuit) <span class="sc">%&gt;%</span></span>
+<span id="cb4-3"><a href="datos.html#cb4-3" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(year, n, <span class="at">color =</span> circuit)) <span class="sc">+</span></span>
+<span id="cb4-4"><a href="datos.html#cb4-4" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">linewidth =</span> <span class="dv">1</span>) <span class="sc">+</span> <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
+<span id="cb4-5"><a href="datos.html#cb4-5" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">values =</span> col_circ) <span class="sc">+</span></span>
+<span id="cb4-6"><a href="datos.html#cb4-6" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks =</span> <span class="fu">seq</span>(<span class="dv">2000</span>, <span class="dv">2019</span>, <span class="dv">2</span>)) <span class="sc">+</span></span>
+<span id="cb4-7"><a href="datos.html#cb4-7" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">&quot;Año&quot;</span>, <span class="at">y =</span> <span class="st">&quot;Número de partidos&quot;</span>, <span class="at">color =</span> <span class="st">&quot;Circuito&quot;</span>)</span></code></pre></div>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:fig-partidos-anio"></span>
+<img src="voleibol_playa_files/figure-html/fig-partidos-anio-1.png" alt="Partidos por año y circuito, 2000–2019." width="100%" />
+<p class="caption">
+Figura 4.1: Partidos por año y circuito, 2000–2019.
+</p>
+</div>
+<p>La cobertura <strong>no es pareja en el tiempo</strong>. El año 2000 tiene muy pocos partidos, todos de la FIVB. La AVP casi desaparece en 2011 y 2012, que coincide con la suspensión de sus operaciones descrita en el capítulo 1 (el dato refleja la historia real, no es un error de captura), y se recupera después de 2013.</p>
+<p><strong>Etapa del torneo.</strong> La variable <code>bracket</code> tiene 36 categorías, muchas con muy pocos partidos. Para el análisis se agrupan en tres etapas:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="datos.html#cb5-1" tabindex="-1"></a>agrupar_bracket <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
+<span id="cb5-2"><a href="datos.html#cb5-2" tabindex="-1"></a>  x <span class="ot">&lt;-</span> <span class="fu">as.character</span>(x)</span>
+<span id="cb5-3"><a href="datos.html#cb5-3" tabindex="-1"></a>  <span class="fu">case_when</span>(</span>
+<span id="cb5-4"><a href="datos.html#cb5-4" tabindex="-1"></a>    <span class="fu">is.na</span>(x) <span class="sc">~</span> <span class="st">&quot;Sin dato&quot;</span>,</span>
+<span id="cb5-5"><a href="datos.html#cb5-5" tabindex="-1"></a>    x <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">&quot;Qualifier Bracket&quot;</span>, <span class="st">&quot;Qualifier Playoff&quot;</span>, <span class="st">&quot;Lucky Losers&quot;</span>,</span>
+<span id="cb5-6"><a href="datos.html#cb5-6" tabindex="-1"></a>             <span class="st">&quot;Country Quota Matches&quot;</span>) <span class="sc">~</span> <span class="st">&quot;Clasificatoria&quot;</span>,</span>
+<span id="cb5-7"><a href="datos.html#cb5-7" tabindex="-1"></a>    <span class="fu">grepl</span>(<span class="st">&quot;^Pool&quot;</span>, x) <span class="sc">~</span> <span class="st">&quot;Fase de grupos&quot;</span>,</span>
+<span id="cb5-8"><a href="datos.html#cb5-8" tabindex="-1"></a>    <span class="cn">TRUE</span> <span class="sc">~</span> <span class="st">&quot;Cuadro eliminatorio&quot;</span></span>
+<span id="cb5-9"><a href="datos.html#cb5-9" tabindex="-1"></a>  )</span>
+<span id="cb5-10"><a href="datos.html#cb5-10" tabindex="-1"></a>}</span>
+<span id="cb5-11"><a href="datos.html#cb5-11" tabindex="-1"></a></span>
+<span id="cb5-12"><a href="datos.html#cb5-12" tabindex="-1"></a>raw <span class="sc">%&gt;%</span></span>
+<span id="cb5-13"><a href="datos.html#cb5-13" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Etapa =</span> <span class="fu">agrupar_bracket</span>(bracket)) <span class="sc">%&gt;%</span></span>
+<span id="cb5-14"><a href="datos.html#cb5-14" tabindex="-1"></a>  <span class="fu">count</span>(Etapa, <span class="at">name =</span> <span class="st">&quot;Partidos&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb5-15"><a href="datos.html#cb5-15" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(Partidos)) <span class="sc">%&gt;%</span></span>
+<span id="cb5-16"><a href="datos.html#cb5-16" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="st">`</span><span class="at">% del total</span><span class="st">`</span> <span class="ot">=</span> <span class="dv">100</span> <span class="sc">*</span> Partidos <span class="sc">/</span> <span class="fu">sum</span>(Partidos)) <span class="sc">%&gt;%</span></span>
+<span id="cb5-17"><a href="datos.html#cb5-17" tabindex="-1"></a>  <span class="fu">tabla</span>(<span class="at">caption =</span> <span class="st">&quot;Partidos por etapa del torneo (`bracket` agrupado).&quot;</span>, <span class="at">digits =</span> <span class="dv">1</span>)</span></code></pre></div>
+<table>
+<caption><span id="tab:bracket-grupos">Tabla 4.3: </span>Partidos por etapa del torneo (<code>bracket</code> agrupado).</caption>
+<thead>
+<tr class="header">
+<th align="left">Etapa</th>
+<th align="right">Partidos</th>
+<th align="right">% del total</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Cuadro eliminatorio</td>
+<td align="right">36.003</td>
+<td align="right">46,9</td>
+</tr>
+<tr class="even">
+<td align="left">Clasificatoria</td>
+<td align="right">23.593</td>
+<td align="right">30,7</td>
+</tr>
+<tr class="odd">
+<td align="left">Fase de grupos</td>
+<td align="right">17.160</td>
+<td align="right">22,4</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><strong>Clasificatoria:</strong> <code>Qualifier Bracket</code>, <code>Qualifier Playoff</code>, <code>Lucky Losers</code> y <code>Country Quota Matches</code>, todo lo previo al cuadro principal.</li>
+<li><strong>Fase de grupos:</strong> todas las categorías <code>Pool A</code>, <code>Pool B</code>, etc.</li>
+<li><strong>Cuadro eliminatorio:</strong> el resto (cuadros de ganadores y de perdedores, semifinales, finales y partidos por medalla).</li>
+</ul>
+</div>
+<div id="países-sede-y-de-procedencia" class="section level2 unnumbered hasAnchor">
+<h2>Países sede y de procedencia<a href="datos.html#pa%C3%ADses-sede-y-de-procedencia" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="datos.html#cb6-1" tabindex="-1"></a>sede <span class="ot">&lt;-</span> raw <span class="sc">%&gt;%</span> <span class="fu">count</span>(country, <span class="at">sort =</span> <span class="cn">TRUE</span>) <span class="sc">%&gt;%</span> <span class="fu">slice_head</span>(<span class="at">n =</span> <span class="dv">10</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb6-2"><a href="datos.html#cb6-2" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="st">`</span><span class="at">País sede</span><span class="st">`</span> <span class="ot">=</span> country, <span class="st">`</span><span class="at">Partidos</span><span class="st">`</span> <span class="ot">=</span> n)</span>
+<span id="cb6-3"><a href="datos.html#cb6-3" tabindex="-1"></a></span>
+<span id="cb6-4"><a href="datos.html#cb6-4" tabindex="-1"></a>proc <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(<span class="fu">select</span>(raw, <span class="at">pais =</span> w_p1_country), <span class="fu">select</span>(raw, <span class="at">pais =</span> w_p2_country),</span>
+<span id="cb6-5"><a href="datos.html#cb6-5" tabindex="-1"></a>                  <span class="fu">select</span>(raw, <span class="at">pais =</span> l_p1_country), <span class="fu">select</span>(raw, <span class="at">pais =</span> l_p2_country)) <span class="sc">%&gt;%</span></span>
+<span id="cb6-6"><a href="datos.html#cb6-6" tabindex="-1"></a>  <span class="fu">count</span>(pais, <span class="at">sort =</span> <span class="cn">TRUE</span>) <span class="sc">%&gt;%</span> <span class="fu">slice_head</span>(<span class="at">n =</span> <span class="dv">10</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb6-7"><a href="datos.html#cb6-7" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="st">`</span><span class="at">País del jugador</span><span class="st">`</span> <span class="ot">=</span> pais, <span class="st">`</span><span class="at">Registros</span><span class="st">`</span> <span class="ot">=</span> n)</span>
+<span id="cb6-8"><a href="datos.html#cb6-8" tabindex="-1"></a></span>
+<span id="cb6-9"><a href="datos.html#cb6-9" tabindex="-1"></a><span class="fu">bind_cols</span>(sede, proc) <span class="sc">%&gt;%</span></span>
+<span id="cb6-10"><a href="datos.html#cb6-10" tabindex="-1"></a>  <span class="fu">tabla</span>(<span class="at">caption =</span> <span class="st">&quot;Diez primeros países sede de torneo y de procedencia de los jugadores (las cuatro posiciones combinadas).&quot;</span>, <span class="at">digits =</span> <span class="dv">0</span>)</span></code></pre></div>
+<table>
+<caption><span id="tab:tab-paises">Tabla 4.4: </span>Diez primeros países sede de torneo y de procedencia de los jugadores (las cuatro posiciones combinadas).</caption>
+<thead>
+<tr class="header">
+<th align="left">País sede</th>
+<th align="right">Partidos</th>
+<th align="left">País del jugador</th>
+<th align="right">Registros</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">United States</td>
+<td align="right">27.311</td>
+<td align="left">United States</td>
+<td align="right">112.538</td>
+</tr>
+<tr class="even">
+<td align="left">China</td>
+<td align="right">6.158</td>
+<td align="left">Brazil</td>
+<td align="right">25.162</td>
+</tr>
+<tr class="odd">
+<td align="left">Switzerland</td>
+<td align="right">4.116</td>
+<td align="left">Germany</td>
+<td align="right">16.666</td>
+</tr>
+<tr class="even">
+<td align="left">Poland</td>
+<td align="right">3.358</td>
+<td align="left">Switzerland</td>
+<td align="right">9.930</td>
+</tr>
+<tr class="odd">
+<td align="left">Russia</td>
+<td align="right">3.318</td>
+<td align="left">Canada</td>
+<td align="right">9.597</td>
+</tr>
+<tr class="even">
+<td align="left">Austria</td>
+<td align="right">3.302</td>
+<td align="left">Austria</td>
+<td align="right">9.302</td>
+</tr>
+<tr class="odd">
+<td align="left">Norway</td>
+<td align="right">3.280</td>
+<td align="left">Netherlands</td>
+<td align="right">9.000</td>
+</tr>
+<tr class="even">
+<td align="left">France</td>
+<td align="right">2.567</td>
+<td align="left">Russia</td>
+<td align="right">8.283</td>
+</tr>
+<tr class="odd">
+<td align="left">Germany</td>
+<td align="right">2.297</td>
+<td align="left">China</td>
+<td align="right">7.874</td>
+</tr>
+<tr class="even">
+<td align="left">Brazil</td>
+<td align="right">2.070</td>
+<td align="left">Italy</td>
+<td align="right">7.780</td>
+</tr>
+</tbody>
+</table>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="datos.html#cb7-1" tabindex="-1"></a>sede <span class="sc">%&gt;%</span></span>
+<span id="cb7-2"><a href="datos.html#cb7-2" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="st">`</span><span class="at">País sede</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">reorder</span>(<span class="st">`</span><span class="at">País sede</span><span class="st">`</span>, Partidos)) <span class="sc">%&gt;%</span></span>
+<span id="cb7-3"><a href="datos.html#cb7-3" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="st">`</span><span class="at">País sede</span><span class="st">`</span>, Partidos)) <span class="sc">+</span></span>
+<span id="cb7-4"><a href="datos.html#cb7-4" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="at">fill =</span> col_azul) <span class="sc">+</span></span>
+<span id="cb7-5"><a href="datos.html#cb7-5" tabindex="-1"></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span></span>
+<span id="cb7-6"><a href="datos.html#cb7-6" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="cn">NULL</span>, <span class="at">y =</span> <span class="st">&quot;Número de partidos&quot;</span>)</span></code></pre></div>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:fig-sede"></span>
+<img src="voleibol_playa_files/figure-html/fig-sede-1.png" alt="Diez primeros países sede de torneo." width="100%" />
+<p class="caption">
+Figura 4.2: Diez primeros países sede de torneo.
+</p>
+</div>
+<p><strong>Estados Unidos</strong> domina ambas listas: es la sede de la mayor parte de los partidos, porque allí se juega todo el circuito AVP además de torneos de la FIVB, y es también el país de procedencia más frecuente. Brasil aparece como segundo país de procedencia de los jugadores, coherente con su tradición en este deporte, aunque como sede está mucho más abajo. Por eso los resultados del libro describen sobre todo a jugadores estadounidenses y brasileños.</p>
+</div>
+<div id="datos-atípicos" class="section level2 unnumbered hasAnchor">
+<h2>Datos atípicos<a href="datos.html#datos-at%C3%ADpicos" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Se revisan con la regla del rango intercuartílico (IQR): un valor es atípico si queda por debajo de Q1 − 1,5·IQR o por encima de Q3 + 1,5·IQR.</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="datos.html#cb8-1" tabindex="-1"></a>dur_min <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
+<span id="cb8-2"><a href="datos.html#cb8-2" tabindex="-1"></a>  x <span class="ot">&lt;-</span> <span class="fu">as.character</span>(x)</span>
+<span id="cb8-3"><a href="datos.html#cb8-3" tabindex="-1"></a>  <span class="fu">as.numeric</span>(<span class="fu">substr</span>(x, <span class="dv">1</span>, <span class="dv">2</span>)) <span class="sc">*</span> <span class="dv">60</span> <span class="sc">+</span> <span class="fu">as.numeric</span>(<span class="fu">substr</span>(x, <span class="dv">4</span>, <span class="dv">5</span>)) <span class="sc">+</span></span>
+<span id="cb8-4"><a href="datos.html#cb8-4" tabindex="-1"></a>    <span class="fu">as.numeric</span>(<span class="fu">substr</span>(x, <span class="dv">7</span>, <span class="dv">8</span>)) <span class="sc">/</span> <span class="dv">60</span></span>
+<span id="cb8-5"><a href="datos.html#cb8-5" tabindex="-1"></a>}</span>
+<span id="cb8-6"><a href="datos.html#cb8-6" tabindex="-1"></a></span>
+<span id="cb8-7"><a href="datos.html#cb8-7" tabindex="-1"></a>iqr_out <span class="ot">&lt;-</span> <span class="cf">function</span>(x, nombre, unidad) {</span>
+<span id="cb8-8"><a href="datos.html#cb8-8" tabindex="-1"></a>  q <span class="ot">&lt;-</span> <span class="fu">quantile</span>(x, <span class="fu">c</span>(.<span class="dv">25</span>, .<span class="dv">75</span>), <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb8-9"><a href="datos.html#cb8-9" tabindex="-1"></a>  i <span class="ot">&lt;-</span> q[[<span class="dv">2</span>]] <span class="sc">-</span> q[[<span class="dv">1</span>]]</span>
+<span id="cb8-10"><a href="datos.html#cb8-10" tabindex="-1"></a>  lo <span class="ot">&lt;-</span> q[[<span class="dv">1</span>]] <span class="sc">-</span> <span class="fl">1.5</span> <span class="sc">*</span> i</span>
+<span id="cb8-11"><a href="datos.html#cb8-11" tabindex="-1"></a>  hi <span class="ot">&lt;-</span> q[[<span class="dv">2</span>]] <span class="sc">+</span> <span class="fl">1.5</span> <span class="sc">*</span> i</span>
+<span id="cb8-12"><a href="datos.html#cb8-12" tabindex="-1"></a>  n_ok <span class="ot">&lt;-</span> <span class="fu">sum</span>(<span class="sc">!</span><span class="fu">is.na</span>(x))</span>
+<span id="cb8-13"><a href="datos.html#cb8-13" tabindex="-1"></a>  n_out <span class="ot">&lt;-</span> <span class="fu">sum</span>(x <span class="sc">&lt;</span> lo <span class="sc">|</span> x <span class="sc">&gt;</span> hi, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb8-14"><a href="datos.html#cb8-14" tabindex="-1"></a>  <span class="fu">tibble</span>(<span class="at">Variable =</span> nombre, <span class="st">`</span><span class="at">Datos válidos</span><span class="st">`</span> <span class="ot">=</span> n_ok,</span>
+<span id="cb8-15"><a href="datos.html#cb8-15" tabindex="-1"></a>         <span class="st">`</span><span class="at">Rango normal (IQR)</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">paste0</span>(<span class="fu">fmt</span>(lo, <span class="dv">1</span>), <span class="st">&quot; a &quot;</span>, <span class="fu">fmt</span>(hi, <span class="dv">1</span>), <span class="st">&quot; &quot;</span>, unidad),</span>
+<span id="cb8-16"><a href="datos.html#cb8-16" tabindex="-1"></a>         Atípicos <span class="ot">=</span> n_out, <span class="st">`</span><span class="at">% atípicos</span><span class="st">`</span> <span class="ot">=</span> <span class="dv">100</span> <span class="sc">*</span> n_out <span class="sc">/</span> n_ok,</span>
+<span id="cb8-17"><a href="datos.html#cb8-17" tabindex="-1"></a>         Mínimo <span class="ot">=</span> <span class="fu">min</span>(x, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), Máximo <span class="ot">=</span> <span class="fu">max</span>(x, <span class="at">na.rm =</span> <span class="cn">TRUE</span>))</span>
+<span id="cb8-18"><a href="datos.html#cb8-18" tabindex="-1"></a>}</span>
+<span id="cb8-19"><a href="datos.html#cb8-19" tabindex="-1"></a></span>
+<span id="cb8-20"><a href="datos.html#cb8-20" tabindex="-1"></a>edades  <span class="ot">&lt;-</span> <span class="fu">c</span>(raw<span class="sc">$</span>w_p1_age, raw<span class="sc">$</span>w_p2_age, raw<span class="sc">$</span>l_p1_age, raw<span class="sc">$</span>l_p2_age)</span>
+<span id="cb8-21"><a href="datos.html#cb8-21" tabindex="-1"></a>alturas <span class="ot">&lt;-</span> <span class="fu">c</span>(raw<span class="sc">$</span>w_p1_hgt, raw<span class="sc">$</span>w_p2_hgt, raw<span class="sc">$</span>l_p1_hgt, raw<span class="sc">$</span>l_p2_hgt)</span>
+<span id="cb8-22"><a href="datos.html#cb8-22" tabindex="-1"></a></span>
+<span id="cb8-23"><a href="datos.html#cb8-23" tabindex="-1"></a><span class="fu">bind_rows</span>(</span>
+<span id="cb8-24"><a href="datos.html#cb8-24" tabindex="-1"></a>  <span class="fu">iqr_out</span>(<span class="fu">dur_min</span>(raw<span class="sc">$</span>duration), <span class="st">&quot;Duración&quot;</span>, <span class="st">&quot;min&quot;</span>),</span>
+<span id="cb8-25"><a href="datos.html#cb8-25" tabindex="-1"></a>  <span class="fu">iqr_out</span>(edades, <span class="st">&quot;Edad&quot;</span>, <span class="st">&quot;años&quot;</span>),</span>
+<span id="cb8-26"><a href="datos.html#cb8-26" tabindex="-1"></a>  <span class="fu">iqr_out</span>(alturas, <span class="st">&quot;Estatura&quot;</span>, <span class="st">&quot;pulgadas&quot;</span>)</span>
+<span id="cb8-27"><a href="datos.html#cb8-27" tabindex="-1"></a>) <span class="sc">%&gt;%</span> <span class="fu">tabla</span>(<span class="at">caption =</span> <span class="st">&quot;Valores atípicos según el método IQR.&quot;</span>, <span class="at">digits =</span> <span class="dv">1</span>)</span></code></pre></div>
+<table>
+<caption><span id="tab:tab-atipicos">Tabla 4.5: </span>Valores atípicos según el método IQR.</caption>
+<colgroup>
+<col width="11%" />
+<col width="17%" />
+<col width="26%" />
+<col width="11%" />
+<col width="14%" />
+<col width="8%" />
+<col width="8%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">Variable</th>
+<th align="right">Datos válidos</th>
+<th align="left">Rango normal (IQR)</th>
+<th align="right">Atípicos</th>
+<th align="right">% atípicos</th>
+<th align="right">Mínimo</th>
+<th align="right">Máximo</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Duración</td>
+<td align="right">74.507</td>
+<td align="left">13,5 a 73,5 min</td>
+<td align="right">902</td>
+<td align="right">1,2</td>
+<td align="right">2,0</td>
+<td align="right">134,0</td>
+</tr>
+<tr class="even">
+<td align="left">Edad</td>
+<td align="right">304.215</td>
+<td align="left">14,5 a 42,2 años</td>
+<td align="right">2.668</td>
+<td align="right">0,9</td>
+<td align="right">13,2</td>
+<td align="right">67,8</td>
+</tr>
+<tr class="odd">
+<td align="left">Estatura</td>
+<td align="right">285.071</td>
+<td align="left">63,5 a 83,5 pulgadas</td>
+<td align="right">754</td>
+<td align="right">0,3</td>
+<td align="right">61,0</td>
+<td align="right">85,0</td>
+</tr>
+</tbody>
+</table>
+<p>Los atípicos de duración, edad y estatura son <strong>pocos y verosímiles</strong>: partidos muy cortos o muy largos, jugadores muy jóvenes o veteranos, estaturas en los extremos del deporte profesional. No se eliminan.</p>
+<p>Hay otros problemas que el IQR no detecta, pero que sí son errores del archivo y se corrigen en el capítulo 5:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="datos.html#cb9-1" tabindex="-1"></a>n_bd_imposible <span class="ot">&lt;-</span> <span class="fu">sum</span>(<span class="fu">unlist</span>(<span class="fu">lapply</span>(<span class="fu">c</span>(<span class="st">&quot;w_p1&quot;</span>, <span class="st">&quot;w_p2&quot;</span>, <span class="st">&quot;l_p1&quot;</span>, <span class="st">&quot;l_p2&quot;</span>), <span class="cf">function</span>(p) {</span>
+<span id="cb9-2"><a href="datos.html#cb9-2" tabindex="-1"></a>  raw[[<span class="fu">paste0</span>(p, <span class="st">&quot;_birthdate&quot;</span>)]] <span class="sc">&gt;</span> raw<span class="sc">$</span>date</span>
+<span id="cb9-3"><a href="datos.html#cb9-3" tabindex="-1"></a>})), <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb9-4"><a href="datos.html#cb9-4" tabindex="-1"></a>n_forfeit <span class="ot">&lt;-</span> <span class="fu">sum</span>(raw<span class="sc">$</span>score <span class="sc">==</span> <span class="st">&quot;Forfeit or other&quot;</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb9-5"><a href="datos.html#cb9-5" tabindex="-1"></a>n_corto <span class="ot">&lt;-</span> <span class="fu">sum</span>(<span class="fu">dur_min</span>(raw<span class="sc">$</span>duration) <span class="sc">&lt;</span> <span class="dv">10</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb9-6"><a href="datos.html#cb9-6" tabindex="-1"></a>n_texto_rank <span class="ot">&lt;-</span> <span class="fu">sum</span>(<span class="fu">is.na</span>(<span class="fu">suppressWarnings</span>(<span class="fu">as.numeric</span>(raw<span class="sc">$</span>w_rank))))</span></code></pre></div>
+<ul>
+<li><strong>Fechas de nacimiento imposibles:</strong> 8.906 fechas posteriores al propio partido (años como 2053 o 2068 en lugar de 1953 o 1968).</li>
+<li><strong>Rankings como texto:</strong> 30.211 valores de <code>w_rank</code> no son números (por ejemplo <code>"17, Q2"</code> o <code>"Q16"</code>).</li>
+<li><strong>Marcadores sin puntos:</strong> 893 partidos con <code>score = "Forfeit or other"</code>.</li>
+<li><strong>Duraciones sospechosas:</strong> 17 partidos de menos de 10 minutos.</li>
+</ul>
+
+</div>
+</div>
+<script>
+/* Inserta un bloque "Contenido" con los subtítulos (h2) al inicio de cada capítulo,
+   como en el libro de referencia. Se reconstruye en cada cambio de página de gitbook. */
+(function () {
+  function limpio(h) {
+    var c = h.cloneNode(true);
+    var quitar = c.querySelectorAll('.header-section-number, a.anchor-section');
+    for (var i = 0; i < quitar.length; i++) quitar[i].parentNode.removeChild(quitar[i]);
+    return c.textContent.trim();
+  }
+  function construir() {
+    var sec = document.querySelector('.book-body .page-inner section.normal');
+    if (!sec) return;
+    var previo = document.getElementById('contenido-local');
+    if (previo) previo.parentNode.removeChild(previo);
+    var h1 = sec.querySelector('h1');
+    var h2s = sec.querySelectorAll('h2');
+    if (!h1 || h2s.length < 2) return;
+    var caja = document.createElement('div');
+    caja.id = 'contenido-local';
+    var titulo = document.createElement('h2');
+    titulo.textContent = 'Contenido';
+    caja.appendChild(titulo);
+    var ul = document.createElement('ul');
+    for (var i = 0; i < h2s.length; i++) {
+      var padre = h2s[i].parentElement;
+      var id = h2s[i].id || (padre && padre.id);
+      if (!id) continue;
+      var li = document.createElement('li');
+      var a = document.createElement('a');
+      a.href = '#' + id;
+      a.textContent = limpio(h2s[i]);
+      li.appendChild(a);
+      ul.appendChild(li);
+    }
+    caja.appendChild(ul);
+    h1.parentNode.insertBefore(caja, h1.nextSibling);
+  }
+  document.addEventListener('DOMContentLoaded', function () {
+    construir();
+    if (window.gitbook && gitbook.events) gitbook.events.bind('page.change', construir);
+  });
+})();
+</script>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="metodologia.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="limpieza.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+  "sharing": null,
+  "fontsettings": {
+    "theme": "white",
+    "family": "sans",
+    "size": 2
+  },
+  "edit": {
+    "link": null,
+    "text": null
+  },
+  "history": {
+    "link": null,
+    "text": null
+  },
+  "view": {
+    "link": null,
+    "text": null
+  },
+  "download": null,
+  "search": {
+    "engine": "fuse",
+    "options": null
+  },
+  "toc": {
+    "collapse": "section",
+    "scroll_highlight": true
+  }
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

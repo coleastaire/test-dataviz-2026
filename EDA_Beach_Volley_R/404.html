@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="es" xml:lang="es">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Page not found | Voleibol de playa: qué hace ganar a una pareja</title>
+  <meta name="description" content="Libro de análisis exploratorio de datos sobre 76.749 partidos de voleibol de playa (FIVB y AVP, 2000-2019), pensado para un entrenador que arma parejas y prepara partidos. Versión en R (bookdown)." />
+  <meta name="generator" content="bookdown 0.48 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Page not found | Voleibol de playa: qué hace ganar a una pareja" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:description" content="Libro de análisis exploratorio de datos sobre 76.749 partidos de voleibol de playa (FIVB y AVP, 2000-2019), pensado para un entrenador que arma parejas y prepara partidos. Versión en R (bookdown)." />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Page not found | Voleibol de playa: qué hace ganar a una pareja" />
+  
+  <meta name="twitter:description" content="Libro de análisis exploratorio de datos sobre 76.749 partidos de voleibol de playa (FIVB y AVP, 2000-2019), pensado para un entrenador que arma parejas y prepara partidos. Versión en R (bookdown)." />
+  
+
+<meta name="author" content="Nicolle Ramírez y Roger Daza" />
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+
+
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<link href="libs/htmltools-fill-0.5.9/fill.css" rel="stylesheet" />
+<script src="libs/htmlwidgets-1.6.4/htmlwidgets.js"></script>
+<link href="libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet" />
+<script src="libs/datatables-binding-0.34.0/datatables.js"></script>
+<link href="libs/dt-core-1.13.6/css/jquery.dataTables.min.css" rel="stylesheet" />
+<link href="libs/dt-core-1.13.6/css/jquery.dataTables.extra.css" rel="stylesheet" />
+<script src="libs/dt-core-1.13.6/js/jquery.dataTables.min.js"></script>
+<link href="libs/crosstalk-1.2.2/css/crosstalk.min.css" rel="stylesheet" />
+<script src="libs/crosstalk-1.2.2/js/crosstalk.min.js"></script>
+
+
+<style type="text/css">
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./"><strong>Voleibol de playa</strong></a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Prefacio</a>
+<ul>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#c%C3%B3mo-leer-este-libro"><i class="fa fa-check"></i>Cómo leer este libro</a></li>
+</ul></li>
+<li class="chapter" data-level="1" data-path="contexto.html"><a href="contexto.html"><i class="fa fa-check"></i><b>1</b> Contexto</a>
+<ul>
+<li class="chapter" data-level="" data-path="contexto.html"><a href="contexto.html#el-voleibol-de-playa-y-los-circuitos-fivb-y-avp"><i class="fa fa-check"></i>El voleibol de playa y los circuitos FIVB y AVP</a></li>
+<li class="chapter" data-level="" data-path="contexto.html"><a href="contexto.html#pregunta-de-investigaci%C3%B3n-y-usuario-del-an%C3%A1lisis"><i class="fa fa-check"></i>Pregunta de investigación y usuario del análisis</a></li>
+<li class="chapter" data-level="" data-path="contexto.html"><a href="contexto.html#planteamiento-del-problema"><i class="fa fa-check"></i>Planteamiento del problema</a></li>
+<li class="chapter" data-level="" data-path="contexto.html"><a href="contexto.html#justificaci%C3%B3n"><i class="fa fa-check"></i>Justificación</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="objetivos.html"><a href="objetivos.html"><i class="fa fa-check"></i><b>2</b> Objetivos</a>
+<ul>
+<li class="chapter" data-level="" data-path="objetivos.html"><a href="objetivos.html#objetivo-general"><i class="fa fa-check"></i>Objetivo general</a></li>
+<li class="chapter" data-level="" data-path="objetivos.html"><a href="objetivos.html#objetivos-espec%C3%ADficos"><i class="fa fa-check"></i>Objetivos específicos</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="metodologia.html"><a href="metodologia.html"><i class="fa fa-check"></i><b>3</b> Metodología</a>
+<ul>
+<li class="chapter" data-level="" data-path="metodologia.html"><a href="metodologia.html#marco-te%C3%B3rico"><i class="fa fa-check"></i>Marco teórico</a>
+<ul>
+<li class="chapter" data-level="3.0.1" data-path="metodologia.html"><a href="metodologia.html#an%C3%A1lisis-exploratorio-de-datos"><i class="fa fa-check"></i><b>3.0.1</b> Análisis exploratorio de datos</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="metodologia.html"><a href="metodologia.html#tratamiento-estad%C3%ADstico-y-pruebas-no-param%C3%A9tricas"><i class="fa fa-check"></i>Tratamiento estadístico y pruebas no paramétricas</a></li>
+<li class="chapter" data-level="" data-path="metodologia.html"><a href="metodologia.html#an%C3%A1lisis-de-solapamiento"><i class="fa fa-check"></i>Análisis de solapamiento</a></li>
+<li class="chapter" data-level="" data-path="metodologia.html"><a href="metodologia.html#an%C3%A1lisis-multivariado-y-redundancia"><i class="fa fa-check"></i>Análisis multivariado y redundancia</a></li>
+<li class="chapter" data-level="" data-path="metodologia.html"><a href="metodologia.html#fases-del-procesamiento"><i class="fa fa-check"></i>Fases del procesamiento</a></li>
+<li class="chapter" data-level="" data-path="metodologia.html"><a href="metodologia.html#herramientas"><i class="fa fa-check"></i>Herramientas</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="datos.html"><a href="datos.html"><i class="fa fa-check"></i><b>4</b> Descripción del conjunto de datos</a>
+<ul>
+<li class="chapter" data-level="" data-path="datos.html"><a href="datos.html#estructura-y-variables"><i class="fa fa-check"></i>Estructura y variables</a></li>
+<li class="chapter" data-level="" data-path="datos.html"><a href="datos.html#cobertura-por-circuito-g%C3%A9nero-y-etapa"><i class="fa fa-check"></i>Cobertura por circuito, género y etapa</a></li>
+<li class="chapter" data-level="" data-path="datos.html"><a href="datos.html#pa%C3%ADses-sede-y-de-procedencia"><i class="fa fa-check"></i>Países sede y de procedencia</a></li>
+<li class="chapter" data-level="" data-path="datos.html"><a href="datos.html#datos-at%C3%ADpicos"><i class="fa fa-check"></i>Datos atípicos</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="limpieza.html"><a href="limpieza.html"><i class="fa fa-check"></i><b>5</b> Limpieza y preparación</a>
+<ul>
+<li class="chapter" data-level="" data-path="limpieza.html"><a href="limpieza.html#duplicados-y-llave-del-partido"><i class="fa fa-check"></i>Duplicados y llave del partido</a></li>
+<li class="chapter" data-level="" data-path="limpieza.html"><a href="limpieza.html#valores-faltantes"><i class="fa fa-check"></i>Valores faltantes</a></li>
+<li class="chapter" data-level="" data-path="limpieza.html"><a href="limpieza.html#correcciones-de-calidad"><i class="fa fa-check"></i>Correcciones de calidad</a></li>
+<li class="chapter" data-level="" data-path="limpieza.html"><a href="limpieza.html#formato-largo-y-archivos-limpios"><i class="fa fa-check"></i>Formato largo y archivos limpios</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="eda.html"><a href="eda.html"><i class="fa fa-check"></i><b>6</b> Análisis exploratorio</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="eda.html"><a href="eda.html#an%C3%A1lisis-univariado"><i class="fa fa-check"></i><b>6.1</b> Análisis univariado</a>
+<ul>
+<li class="chapter" data-level="6.1.1" data-path="eda.html"><a href="eda.html#el-partido"><i class="fa fa-check"></i><b>6.1.1</b> El partido</a></li>
+<li class="chapter" data-level="6.1.2" data-path="eda.html"><a href="eda.html#los-jugadores-y-las-parejas"><i class="fa fa-check"></i><b>6.1.2</b> Los jugadores y las parejas</a></li>
+</ul></li>
+<li class="chapter" data-level="6.2" data-path="eda.html"><a href="eda.html#an%C3%A1lisis-bivariado"><i class="fa fa-check"></i><b>6.2</b> Análisis bivariado</a>
+<ul>
+<li class="chapter" data-level="6.2.1" data-path="eda.html"><a href="eda.html#parejas-ganadoras-frente-a-perdedoras"><i class="fa fa-check"></i><b>6.2.1</b> Parejas ganadoras frente a perdedoras</a></li>
+<li class="chapter" data-level="6.2.2" data-path="eda.html"><a href="eda.html#cu%C3%A1ndo-el-ranking-anticipa-el-resultado"><i class="fa fa-check"></i><b>6.2.2</b> Cuándo el ranking anticipa el resultado</a></li>
+<li class="chapter" data-level="6.2.3" data-path="eda.html"><a href="eda.html#estad%C3%ADsticas-de-juego-solo-para-una-parte-de-los-partidos"><i class="fa fa-check"></i><b>6.2.3</b> Estadísticas de juego (solo para una parte de los partidos)</a></li>
+</ul></li>
+<li class="chapter" data-level="6.3" data-path="eda.html"><a href="eda.html#an%C3%A1lisis-multivariado"><i class="fa fa-check"></i><b>6.3</b> Análisis multivariado</a>
+<ul>
+<li class="chapter" data-level="6.3.1" data-path="eda.html"><a href="eda.html#redundancia-entre-factores"><i class="fa fa-check"></i><b>6.3.1</b> Redundancia entre factores</a></li>
+<li class="chapter" data-level="6.3.2" data-path="eda.html"><a href="eda.html#aporte-conjunto-regresi%C3%B3n-log%C3%ADstica"><i class="fa fa-check"></i><b>6.3.2</b> Aporte conjunto: regresión logística</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="hallazgos.html"><a href="hallazgos.html"><i class="fa fa-check"></i><b>7</b> Hallazgos y recomendaciones</a>
+<ul>
+<li class="chapter" data-level="" data-path="hallazgos.html"><a href="hallazgos.html#hallazgos-principales"><i class="fa fa-check"></i>Hallazgos principales</a></li>
+<li class="chapter" data-level="" data-path="hallazgos.html"><a href="hallazgos.html#recomendaciones-para-el-entrenador"><i class="fa fa-check"></i>Recomendaciones para el entrenador</a></li>
+<li class="chapter" data-level="" data-path="hallazgos.html"><a href="hallazgos.html#limitaciones"><i class="fa fa-check"></i>Limitaciones</a></li>
+<li class="chapter" data-level="" data-path="hallazgos.html"><a href="hallazgos.html#pr%C3%B3ximos-pasos-el-dashboard"><i class="fa fa-check"></i>Próximos pasos: el dashboard</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="referencias.html"><a href="referencias.html"><i class="fa fa-check"></i>Referencias</a></li>
+<li class="divider"></li>
+<li><a>Nicolle Ramírez y Roger Daza</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Voleibol de playa: qué hace ganar a una pareja</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="page-not-found" class="section level1">
+<h1>Page not found</h1>
+<p>The page you requested cannot be found (perhaps it was moved or renamed).</p>
+<p>You may want to try searching to find the page's new location, or use
+the table of contents to find the page you are looking for.</p>
+</div>
+<script>
+/* Inserta un bloque "Contenido" con los subtítulos (h2) al inicio de cada capítulo,
+   como en el libro de referencia. Se reconstruye en cada cambio de página de gitbook. */
+(function () {
+  function limpio(h) {
+    var c = h.cloneNode(true);
+    var quitar = c.querySelectorAll('.header-section-number, a.anchor-section');
+    for (var i = 0; i < quitar.length; i++) quitar[i].parentNode.removeChild(quitar[i]);
+    return c.textContent.trim();
+  }
+  function construir() {
+    var sec = document.querySelector('.book-body .page-inner section.normal');
+    if (!sec) return;
+    var previo = document.getElementById('contenido-local');
+    if (previo) previo.parentNode.removeChild(previo);
+    var h1 = sec.querySelector('h1');
+    var h2s = sec.querySelectorAll('h2');
+    if (!h1 || h2s.length < 2) return;
+    var caja = document.createElement('div');
+    caja.id = 'contenido-local';
+    var titulo = document.createElement('h2');
+    titulo.textContent = 'Contenido';
+    caja.appendChild(titulo);
+    var ul = document.createElement('ul');
+    for (var i = 0; i < h2s.length; i++) {
+      var padre = h2s[i].parentElement;
+      var id = h2s[i].id || (padre && padre.id);
+      if (!id) continue;
+      var li = document.createElement('li');
+      var a = document.createElement('a');
+      a.href = '#' + id;
+      a.textContent = limpio(h2s[i]);
+      li.appendChild(a);
+      ul.appendChild(li);
+    }
+    caja.appendChild(ul);
+    h1.parentNode.insertBefore(caja, h1.nextSibling);
+  }
+  document.addEventListener('DOMContentLoaded', function () {
+    construir();
+    if (window.gitbook && gitbook.events) gitbook.events.bind('page.change', construir);
+  });
+})();
+</script>
+            </section>
+
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+  "sharing": null,
+  "fontsettings": {
+    "theme": "white",
+    "family": "sans",
+    "size": 2
+  },
+  "edit": {
+    "link": null,
+    "text": null
+  },
+  "history": {
+    "link": null,
+    "text": null
+  },
+  "view": {
+    "link": null,
+    "text": null
+  },
+  "download": null,
+  "search": {
+    "engine": "fuse",
+    "options": null
+  },
+  "toc": {
+    "collapse": "section",
+    "scroll_highlight": true
+  }
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

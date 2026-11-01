@@ -1,0 +1,15 @@
+format: jb-book
+root: intro
+options:
+  numbered: true
+chapters:
+  - file: 01_contexto
+  - file: 02_objetivos
+  - file: 03_metodologia
+  - file: 04_datos
+  - file: 05_limpieza
+  - file: 06_eda
+  - file: 07_temporal
+  - file: 08_modelado
+  - file: 09_conclusiones
+  - file: 10_referencias
